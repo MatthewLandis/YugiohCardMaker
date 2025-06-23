@@ -99,3 +99,38 @@ section {
 .btn-box .btn:hover::before {
   width: 100%;
 }
+
+.cardSpawn {
+  position: absolute;
+}
+
+.cardBox {
+  position: relative;
+  width: 12rem;
+  height: 17.5rem;
+  background: transparent;
+  border: 2px solid var(--main-color);
+  box-sizing: border-box;
+  animation: fall-spin 10s infinite;
+}
+
+.cardOval {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5rem;
+  height: 10rem;
+  background: var(--main-color);
+  border-radius: 50%;
+}
+
+@keyframes fall-spin {
+  0% {
+    transform: translate(0, 0) rotateY(0deg);
+
+  }
+  100% {
+    transform: translate(0, 120vh) rotateY(360deg);
+  }
+}
