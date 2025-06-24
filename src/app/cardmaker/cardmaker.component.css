@@ -1,49 +1,74 @@
+@font-face {
+  font-family: 'matrixregularsmallcaps';
+  src: url('../../../public/assets/fonts/MatrixRegularSmallCaps.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'yugiohmonstertype';
+  src: url("../../../public/assets/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'matrixboldsmallcaps';
+  src: url('../../../public/assets/fonts/MatrixBoldSmallCaps.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'rogsansrfstd-ub';
+  src: url('../../../public/assets/fonts/RoGSanSrfStd-UB.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'matrixboldfractions';
+  src: url('../../../public/assets/fonts/MatrixBoldFractions.otf') format('opentype');
+}
+
+.cardmaker-content {
+  /* Everything now under the navbar */
+  position: relative;
+}
+
+.cardmaker-content .flex {
+  /* CardDisplay and SidebarRight Flex */
+  display: flex;
+}
+
 /* Aside */
 .sidebarRight {
-  position: absolute;
-  top: 85px;
-  right: 8px;
-  width: 435px;
-  background-color: #111;
-  border: 1px solid #fff;
-  color: white;
-}
-section {
-  padding: 8px;
-  font-size: 20px;
-}
-h1, h2{
-  text-align: center;
-  margin: 0;
-  font-weight:100;
-  font-family: 'Aguero Serif Free';
-}
-hr {
-    margin: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  font-size: 2rem;
+  color: var(--text-color);
+  background-color: var(--second-bg-color);
+  border: .2rem solid var(--main-color);
+  border-radius: .8rem;
+  width: 55rem;
 }
 
 /* Display */
 .Display {
-  position: absolute;
-  left: 8px;
-  width: 813px;
-  height: 1185px;
+  position: relative;
+  width: 100%;
 }
 
 .CardDisplay {
   position: absolute;
   top: 0;
-  left: 37px;
+  left: 0;
   right: 0;
   margin: auto;
   width: fit-content;
 }
 
-  .CardDisplay img {
-    position: absolute;
-    left: -425px;
-    width: fit-content;
-  }
+.CardDisplay img {
+  position: absolute;
+  left: -425px;
+  width: fit-content;
+}
+
 /* Card Title ****************************************************************************************************/
 .TitleTextbox {
   position: absolute;
@@ -63,10 +88,6 @@ hr {
   font-family: 'matrixregularsmallcaps';
   white-space: nowrap;
   transform-origin: left center;
-}
-@font-face {
-  font-family: 'matrixregularsmallcaps';
-  src: url('../../../public/assets/fonts/MatrixRegularSmallCaps.ttf') format('truetype');
 }
 
 .Common {
@@ -100,6 +121,7 @@ hr {
   -webkit-text-fill-color: white;
   letter-spacing: -4px;
 }
+
 /* Link Arrow Grid ***********************************************************************************************/
 .link-arrow-grid {
   transform: scale(1.5);
@@ -125,11 +147,6 @@ hr {
   transform-origin: left center;
 }
 
-@font-face {
-  font-family: 'yugiohmonstertype';
-  src: url("../../../public/assets/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf") format("truetype");
-}
-
 .monsterType .bracket {
   margin: 2px;
 }
@@ -142,6 +159,7 @@ hr {
 .monsterType .slash {
   margin: 2px;
 }
+
 /* Lore and Effect Text ******************************************************************************************/
 .CardEffectTextbox {
   position: absolute;
@@ -175,7 +193,8 @@ hr {
   font-size: 21pt;
 }
 
-.PendulumText, .spellText {
+.PendulumText,
+.spellText {
   text-align: justify;
   line-height: 1;
   white-space: pre-line;
@@ -183,6 +202,7 @@ hr {
   font-family: 'MatrixBook';
   transform-origin: left center;
 }
+
 /* Attack and Defense Styling ************************************************************************************/
 .atkDef {
   position: absolute;
@@ -190,12 +210,9 @@ hr {
   font-family: 'matrixboldsmallcaps';
   text-align: right;
   width: 100pt;
-  top: 783pt;
+  top: 810pt;
 }
-@font-face {
-  font-family: 'matrixboldsmallcaps';
-  src: url('../../../public/assets/fonts/MatrixBoldSmallCaps.otf') format('opentype');
-}
+
 .LinkRating {
   font-family: 'rogsansrfstd-ub';
   position: absolute;
@@ -204,64 +221,166 @@ hr {
   transform: scaleX(1.2);
   font-size: 20pt;
 }
-@font-face {
-  font-family: 'rogsansrfstd-ub';
-  src: url('../../../public/assets/fonts/RoGSanSrfStd-UB.otf') format('opentype');
-}
+
 /* Pendulum Scale Styling ************************************************************************************/
 .PendulumScale {
   position: absolute;
-  top: 540pt;
+  top: 592pt;
   font-family: 'matrixboldfractions';
   font-size: 55pt;
   text-align: center;
   width: 100pt;
   letter-spacing: -6px;
 }
-@font-face {
-  font-family: 'matrixboldfractions';
-  src: url('../../../public/assets/fonts/MatrixBoldFractions.otf') format('opentype');
-}
+
 /*****************************************************************************************************************/
 /* Image Container */
-.imageContainer, .pendulumContainer {
-  position: relative;
-  margin: auto;
+.imageContainer,
+.pendulumContainer {
+  position: absolute;
 }
 
 .imageContainer {
   top: 219px;
-  left: 406px;
+  left: 99px;
   width: 614px;
   height: 613px;
 }
 
 .pendulumContainer {
   top: 212px;
-  left: -1px;
+  left: 55px;
   width: 702px;
   height: 664px;
 }
 
-  .imageContainer img, .pendulumContainer img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-  }
-
-
-.save-button {
-  font-weight: 600;
-  font-family: 'Aguero Serif Free';
-  background-color: white;
-  color: black;
-  border: none;
-  padding: 5px 15px;
-  font-size: 30px;
-  cursor: pointer;
+.imageContainer img,
+.pendulumContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
-  .save-button:hover {
-    background-color: #808080;
-  }
 
+.btn-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 5rem;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  height: 100%;
+  background-color: var(--bg-color);
+  border: .2rem solid var(--main-color);
+  border-radius: .8rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: .1rem;
+  color: var(--main-color);
+  z-index: 1;
+  overflow: hidden;
+  transition: .5s;
+}
+
+.btn-box .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--main-color);
+  z-index: -1;
+  transition: .5s;
+}
+
+.btn-box .btn:hover {
+  color: var(--bg-color);
+}
+
+.btn-box .btn:hover::before {
+  width: 100%;
+}
+
+.textarea-field textarea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  color: var(--text-color);
+  background: transparent;
+  border-radius: 0.6rem;
+  border: 0.2rem solid var(--main-color);
+  z-index: 1;
+}
+
+.textarea-field textarea::placeholder {
+  color: var(--text-color);
+}
+
+.focus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--bg-color);
+  border-radius: 0.6rem;
+  transition: 0.5s;
+}
+
+.textarea-field textarea:focus~.focus,
+.textarea-field textarea:valid~.focus {
+  width: 100%;
+}
+
+.textarea-field {
+  position: relative;
+  display: flex;
+}
+
+ .textarea-field textarea {
+  resize: none;
+}
+
+.template-dropdown {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  height: 5rem;
+  background-color: var(--bg-color);
+  border: .2rem solid var(--main-color);
+  border-radius: .8rem;
+  font-size: 1.6rem;
+  color: var(--text-color);
+}
+
+.core {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--bg-color);
+  border: .2rem solid var(--main-color);
+  border-radius: .8rem;
+  padding: 1rem;
+}
+
+.core .hint {
+  color: var(--main-color);
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.flex2 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

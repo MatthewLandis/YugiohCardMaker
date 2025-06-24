@@ -4,6 +4,7 @@
   background: var(--bg-color);
   align-items: center;
   transition: .3s;
+  margin-bottom: 1rem;
 }
 
 .navbar {
