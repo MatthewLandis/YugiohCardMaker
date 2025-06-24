@@ -1,5 +1,5 @@
 section {
-  min-height: calc(100vh - 63.2px); /* Navbar height */
+  min-height: calc(100vh - 65.2px); /* Navbar height */
   padding: 10rem 9% 2rem;
 }
 
@@ -15,6 +15,10 @@ section {
 }
 
 .about-content {
+  padding: 2rem;
+  background: var(--bg-color);
+  border: .2rem solid var(--main-color);
+  border-radius: .8rem;
   max-width: 60rem;
   display: flex;
   flex-direction: column;
@@ -39,6 +43,7 @@ section {
 }
 
 .disclaimer {
+  background: var(--bg-color);
   border-radius: .8rem;
   position: absolute;
   bottom: 10px;
@@ -100,20 +105,32 @@ section {
   width: 100%;
 }
 
-.cardSpawn {
-  position: absolute;
+/* Container for all falling cards */
+.background-cards-container {
+  position: fixed; /* Position relative to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Hide cards once they go off screen */
+  pointer-events: none; /* Allows clicks/interactions on content behind it */
+  z-index: -1; /* Ensures it stays behind all other content */
 }
 
+/* Styles for the card box */
 .cardBox {
-  position: relative;
+  position: absolute; /* Crucial for placing cards dynamically */
   width: 12rem;
   height: 17.5rem;
   background: transparent;
   border: 2px solid var(--main-color);
   box-sizing: border-box;
-  animation: fall-spin 10s infinite;
+  animation: fall-spin 10s linear infinite; /* Changed to linear for consistent speed */
+  opacity: 0; /* Start invisible, fade in with JS */
+  will-change: transform, opacity; /* Optimize animation performance */
 }
 
+/* Styles for the oval inside the card box */
 .cardOval {
   position: absolute;
   top: 50%;
@@ -125,12 +142,20 @@ section {
   border-radius: 50%;
 }
 
+/* Keyframes for falling and spinning animation */
 @keyframes fall-spin {
   0% {
-    transform: translate(0, 0) rotateY(0deg);
-
+    transform: translate(0, -100px) rotateY(0deg); /* Start above the viewport */
+    opacity: 0;
+  }
+  10% {
+    opacity: 1; /* Fade in quickly */
+  }
+  90% {
+    opacity: 1;
   }
   100% {
-    transform: translate(0, 120vh) rotateY(360deg);
+    transform: translate(0, 120vh) rotateY(360deg); /* Fall beyond the viewport */
+    opacity: 0; /* Fade out as it leaves */
   }
 }

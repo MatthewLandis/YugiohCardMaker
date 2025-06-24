@@ -1,4 +1,5 @@
 .header {
+  border-bottom: .2rem solid var(--main-color);
   padding: 2rem;
   background: var(--bg-color);
   align-items: center;
