@@ -1,10 +1,11 @@
 <div class="cardmaker-content">
   <div class="flex">
     <div class="Display">
+      <div class="print">
       <!-- Card Art: Standard -->
       <div class="CardDisplay">
         <div class="imageContainer" *ngIf="!PendulumTemplate">
-          <img *ngIf="!imageUrl" src="assets/Dark Magician Art.png" />
+          <img *ngIf="!imageUrl" src="assets/placeholderArt.webp" />
           <img *ngIf="imageUrl" [src]="imageUrl" />
         </div>
       </div>
@@ -15,7 +16,7 @@
       <!-- Card Art: Pendulum -->
       <div class="CardDisplay">
         <div class="pendulumContainer" *ngIf="PendulumTemplate">
-          <img *ngIf="!imageUrl" src="assets/Dark Magician Art.png" />
+          <img *ngIf="!imageUrl" src="assets/placeholderArt.webp" />
           <img *ngIf="imageUrl" [src]="imageUrl" />
         </div>
       </div>
@@ -87,7 +88,7 @@
         <div *ngIf="!['Spell', 'Trap'].includes(Template)">
           <div class="CardEffectTextbox">
             <p class="loreText" [style.transform]="'scaleX(' + scaleEffect + ')'"
-              [ngStyle]="loreOrEffect === 'lore' ? {'font-family': 'StoneSerifITC'} : {'font-family': 'MatrixBook' }">
+              [ngStyle]="loreOrEffect === 'lore' ? {'font-family': 'lore'} : {'font-family': 'MatrixBook' }">
               {{ text.lore }}
             </p>
           </div>
@@ -110,7 +111,7 @@
         </div>
       </div>
     </div>
-
+</div>
 
 
 
@@ -127,10 +128,10 @@
           </select>
         </div>
         <!-- Pendulum Template Checkbox -->
-        <section *ngIf="['Normal', 'Effect', 'Ritual', 'Fusion', 'Synchro', 'Xyz'].includes(Template)">
+        <div *ngIf="['Normal', 'Effect', 'Ritual', 'Fusion', 'Synchro', 'Xyz'].includes(Template)" class="flex2">
           <label>Pendulum Template: </label>
-          <input type="checkbox" [(ngModel)]="PendulumTemplate" (change)="autoMonsterTypeAdjustment()" />
-        </section>
+          <input class="template-dropdown" type="checkbox" [(ngModel)]="PendulumTemplate" (change)="autoMonsterTypeAdjustment()" />
+        </div>
         <!-- Title Styles Dropdown -->
         <div class="flex2">
           <label>Title Styles: </label>

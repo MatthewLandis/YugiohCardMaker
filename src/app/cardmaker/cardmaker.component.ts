@@ -17,20 +17,20 @@ export class CardMakerComponent {
   DivineBeasts = ['Slifer', 'Obelisk', 'Ra'];
   PendulumTemplate = false;
 
-  Attribute = 'Dark';
+  Attribute = 'Earth';
   Attributes = ['Dark', 'Light', 'Earth', 'Wind', 'Fire', 'Water', 'Divine', 'Spell', 'Trap', 'No Attribute'];
 
   CardTitle = {
-    Title: 'Dark Magician',
-    TitleStyle: 'Common',
+    Title: 'Bitron',
+    TitleStyle: 'Rare',
     TitleStyles: ['Common', 'Rare', 'SecretRare', 'UltraRare', 'Skill']
   };
 
   LevelType: 'Level' | 'Rank' | 'NLevel' = 'Level';
   Stats = {
-    Attack: '2500',
-    Defense: '2100',
-    LevelValue: 7,
+    Attack: '200',
+    Defense: '2000',
+    LevelValue: 2,
     LevelType: 'Level',
     LinkRating: 3,
     PendulumScale: 4
@@ -38,12 +38,12 @@ export class CardMakerComponent {
 
   loreOrEffect: 'lore' | 'effect' = 'lore';
   text = {
-    lore: 'The ultimate wizard in terms of attack and defense.',
+    lore: "A new species found in electronic space. There's not much information on it.",
     pendulum: 'Once per turn: You can target 1 face-up monster your opponent controls; halve its original ATK.'
   };
 
   MonsterTypes = {
-    Primary: 'Spellcaster',
+    Primary: 'Cyberse',
     Core: '',
     Ability: '',
     Last: 'Normal',
@@ -80,8 +80,6 @@ export class CardMakerComponent {
     Spell: ['Normal', 'Continuous', 'Equip', 'Ritual', 'QuickPlay', 'Field'],
     Trap: ['Normal', 'Continuous', 'Counter']
   };
-
-  private apiUrl = 'http://localhost:5000/api/deck/saveCard';
 
   private canvas = document.createElement('canvas');
   private context = this.canvas.getContext('2d')!;
@@ -187,7 +185,7 @@ export class CardMakerComponent {
 
   saveCard() {
     // Generate the image of the card display
-    const displayElement = document.querySelector('.Display') as HTMLElement;
+    const displayElement = document.querySelector('.print') as HTMLElement;
 
     if (displayElement) {
       html2canvas(displayElement).then((canvas) => {
@@ -198,8 +196,6 @@ export class CardMakerComponent {
         link.href = cardImage;
         link.download = `${this.CardTitle.Title}.png`;
         link.click();
-
-        this.http.post(this.apiUrl, cardImage).subscribe();
       });
     }
     console.log('good');

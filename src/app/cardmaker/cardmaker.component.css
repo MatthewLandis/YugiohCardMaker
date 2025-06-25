@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: 'yugiohmonstertype';
-  src: url('../../../public/assets/fonts/monsterType.ttf') format("truetype");
+  src: url('../../../public/assets/fonts/monstertype.ttf') format("truetype");
 }
 
 @font-face {
@@ -23,9 +23,15 @@
   src: url('../../../public/assets/fonts/MatrixBoldFractions.otf') format('opentype');
 }
 
+@font-face {
+  font-family: 'lore';
+  src: url('../../../public/assets/fonts/lore.ttf') format('truetype');
+}
+
 .cardmaker-content {
   /* Everything now under the navbar */
   position: relative;
+  font-family: monospace;
 }
 
 .cardmaker-content .flex {
@@ -51,6 +57,12 @@
 /* Display */
 .Display {
   position: relative;
+  width: 100%;
+}
+
+.print {
+  position: relative;
+  height: 100%;
   width: 100%;
 }
 
@@ -138,7 +150,7 @@
 /* Monster Type Styling ******************************************************************************************/
 .monsterType {
   position: absolute;
-  top: 878px;
+  top: 881px;
   left: -364px;
   font-size: 24pt;
   font-family: 'yugiohmonstertype';
@@ -179,7 +191,7 @@
 
 .PendulumEffectTextbox {
   position: absolute;
-  top: 723px;
+  top: 748px;
   left: -298px;
   width: 557px;
   transform-origin: left center;
@@ -191,6 +203,8 @@
   line-height: 1;
   white-space: pre-line;
   font-size: 21pt;
+  letter-spacing: -0.2pt;
+  word-spacing: -1pt;
 }
 
 .PendulumText,
@@ -200,7 +214,6 @@
   white-space: pre-line;
   font-size: 19pt;
   font-family: 'MatrixBook';
-  transform-origin: left center;
 }
 
 /* Attack and Defense Styling ************************************************************************************/
