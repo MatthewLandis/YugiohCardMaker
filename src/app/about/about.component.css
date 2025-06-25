@@ -23,6 +23,7 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: var(--text-color);
 }
 
 .about-content h1 {

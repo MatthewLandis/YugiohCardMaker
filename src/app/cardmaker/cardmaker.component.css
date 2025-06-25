@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: 'yugiohmonstertype';
-  src: url("../../../public/assets/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf") format("truetype");
+  src: url('../../../public/assets/fonts/monsterType.ttf') format("truetype");
 }
 
 @font-face {
@@ -138,7 +138,7 @@
 /* Monster Type Styling ******************************************************************************************/
 .monsterType {
   position: absolute;
-  top: 849px;
+  top: 878px;
   left: -364px;
   font-size: 24pt;
   font-family: 'yugiohmonstertype';
@@ -163,7 +163,7 @@
 /* Lore and Effect Text ******************************************************************************************/
 .CardEffectTextbox {
   position: absolute;
-  top: 899px;
+  top: 920px;
   left: -360px;
   width: 684px;
   transform-origin: left center;
@@ -275,7 +275,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 20rem;
+  width: 18rem;
   height: 100%;
   background-color: var(--bg-color);
   border: .2rem solid var(--main-color);
