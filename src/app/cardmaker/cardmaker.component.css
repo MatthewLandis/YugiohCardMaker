@@ -29,17 +29,11 @@
 }
 
 .cardmaker-content {
-  /* Everything now under the navbar */
   position: relative;
   font-family: monospace;
-}
-
-.cardmaker-content .flex {
-  /* CardDisplay and SidebarRight Flex */
   display: flex;
 }
 
-/* Aside */
 .sidebarRight {
   position: relative;
   display: flex;
@@ -51,52 +45,55 @@
   background-color: var(--second-bg-color);
   border: .2rem solid var(--main-color);
   border-radius: .8rem;
-  width: 55rem;
+  width: 40rem;
+
 }
 
-/* Display */
 .Display {
-  position: relative;
-  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .print {
+  width: 400px;
+  height: 600px;
   position: relative;
-  height: 100%;
-  width: 100%;
+  transform-origin: top center;
 }
 
 .CardDisplay {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  margin: auto;
-  width: fit-content;
+  width: 100%;
+  height: 100%;
 }
 
 .CardDisplay img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
   position: absolute;
-  left: -425px;
-  width: fit-content;
+  top: 0;
+  left: 0;
 }
 
-/* Card Title ****************************************************************************************************/
 .TitleTextbox {
   position: absolute;
-  top: 61px;
-  left: -370px;
-  width: 660px;
-  height: 68px;
+  top: 28px;
+  left: 26px;
+  width: 306px;
+  height: 38px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: start;
-  padding: 0 10px;
 }
 
 .CardTitle {
-  font-size: 70pt;
+  font-size: 40pt;
   font-family: 'matrixregularsmallcaps';
   white-space: nowrap;
   transform-origin: left center;
@@ -134,7 +131,6 @@
   letter-spacing: -4px;
 }
 
-/* Link Arrow Grid ***********************************************************************************************/
 .link-arrow-grid {
   transform: scale(1.5);
   display: grid;
@@ -147,12 +143,11 @@
   padding: 20px;
 }
 
-/* Monster Type Styling ******************************************************************************************/
 .monsterType {
   position: absolute;
-  top: 881px;
-  left: -364px;
-  font-size: 24pt;
+  top: 445px;
+  left: 29px;
+  font-size: 13pt;
   font-family: 'yugiohmonstertype';
   white-space: nowrap;
   overflow: hidden;
@@ -172,12 +167,11 @@
   margin: 2px;
 }
 
-/* Lore and Effect Text ******************************************************************************************/
 .CardEffectTextbox {
   position: absolute;
-  top: 920px;
-  left: -360px;
-  width: 684px;
+  top: 470px;
+  left: 32px;
+  width: 337px;
   transform-origin: left center;
 }
 
@@ -191,9 +185,9 @@
 
 .PendulumEffectTextbox {
   position: absolute;
-  top: 748px;
-  left: -298px;
-  width: 557px;
+  top: 378px;
+  left: 62px;
+  width: 278px;
   transform-origin: left center;
 }
 
@@ -202,7 +196,7 @@
   transform-origin: left;
   line-height: 1;
   white-space: pre-line;
-  font-size: 21pt;
+  font-size: 10pt;
   letter-spacing: -0.2pt;
   word-spacing: -1pt;
 }
@@ -212,18 +206,16 @@
   text-align: justify;
   line-height: 1;
   white-space: pre-line;
-  font-size: 19pt;
+  font-size: 10pt;
   font-family: 'MatrixBook';
 }
 
-/* Attack and Defense Styling ************************************************************************************/
 .atkDef {
   position: absolute;
-  font-size: 28pt;
+  font-size: 14pt;
   font-family: 'matrixboldsmallcaps';
   text-align: right;
-  width: 100pt;
-  top: 810pt;
+  top: 547px;
 }
 
 .LinkRating {
@@ -235,36 +227,33 @@
   font-size: 20pt;
 }
 
-/* Pendulum Scale Styling ************************************************************************************/
 .PendulumScale {
   position: absolute;
-  top: 592pt;
+  top: 300pt;
   font-family: 'matrixboldfractions';
-  font-size: 55pt;
+  font-size: 30pt;
   text-align: center;
   width: 100pt;
   letter-spacing: -6px;
 }
 
-/*****************************************************************************************************************/
-/* Image Container */
 .imageContainer,
 .pendulumContainer {
   position: absolute;
 }
 
 .imageContainer {
-  top: 219px;
-  left: 99px;
-  width: 614px;
-  height: 613px;
+  top: 111px;
+  left: 49px;
+  width: 302px;
+  height: 310px;
 }
 
 .pendulumContainer {
-  top: 212px;
-  left: 55px;
-  width: 702px;
-  height: 664px;
+  top: 107px;
+  left: 27px;
+  width: 346px;
+  height: 339px;
 }
 
 .imageContainer img,
@@ -335,34 +324,6 @@
   z-index: 1;
 }
 
-.textarea-field textarea::placeholder {
-  color: var(--text-color);
-}
-
-.focus {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: var(--bg-color);
-  border-radius: 0.6rem;
-  transition: 0.5s;
-}
-
-.textarea-field textarea:focus~.focus,
-.textarea-field textarea:valid~.focus {
-  width: 100%;
-}
-
-.textarea-field {
-  position: relative;
-  display: flex;
-}
-
- .textarea-field textarea {
-  resize: none;
-}
 
 .template-dropdown {
   display: flex;
@@ -374,9 +335,12 @@
   border-radius: .8rem;
   font-size: 1.6rem;
   color: var(--text-color);
+  cursor: pointer;
+
 }
 
 .core {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -384,6 +348,9 @@
   border: .2rem solid var(--main-color);
   border-radius: .8rem;
   padding: 1rem;
+  z-index: 1;
+  overflow: hidden;
+  transition: .5s;
 }
 
 .core .hint {
@@ -396,4 +363,63 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.button-flex {
+  display: flex;
+}
+
+.background-cards-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.cardBox {
+  position: absolute;
+  width: 12rem;
+  height: 17.5rem;
+  background: transparent;
+  border: 2px solid var(--main-color);
+  box-sizing: border-box;
+  animation: fall-spin 10s linear infinite;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cardOval {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5rem;
+  height: 10rem;
+  background: var(--main-color);
+  border-radius: 50%;
+}
+
+/* Keyframes for falling and spinning animation */
+@keyframes fall-spin {
+  0% {
+    transform: translate(0, -100px) rotateY(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, 120vh) rotateY(360deg);
+    opacity: 0;
+  }
 }
