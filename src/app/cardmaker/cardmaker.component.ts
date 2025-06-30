@@ -216,6 +216,13 @@ ngOnInit(): void {
     this.updateLastMonsterType();
     this.updateUnderline();
     this.resetSpellTrapType();
+    this.pendulumUpdate();
+  }
+
+  pendulumUpdate() {
+    const pendulumCover = [ 'Effect', 'normal', 'fusion', 'synchro'];
+    pendulumCover.includes(this.Template)
+    this.PendulumTemplate = false;
   }
 
   updateTitleStyle() {

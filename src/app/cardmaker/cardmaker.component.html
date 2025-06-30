@@ -215,30 +215,30 @@
     <div *ngIf="Template === 'Link'" class="core">
       <p class="hint">Link Settings</p>
       <!-- Link Arrows Control Grid -->
-      <h2 style="font-size: 27pt;">Link Arrow Selection</h2>
+      <h2>Link Arrow Selection</h2>
       <div class="link-arrow-grid">
         <!-- Top Left -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.topLeft" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.topLeft" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Top -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.top" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.top" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Top Right -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.topRight" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.topRight" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Left -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.left" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.left" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Center (Excluded) -->
@@ -248,29 +248,29 @@
         <!-- Right -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.right" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.right" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Bottom Left -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.bottomLeft" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottomLeft" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Bottom -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.bottom" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottom" (change)="updateLinkRating()" />
           </label>
         </div>
         <!-- Bottom Right -->
         <div class="cell">
           <label>
-            <input type="checkbox" [(ngModel)]="linkArrows.bottomRight" (change)="updateLinkRating()" />
+            <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottomRight" (change)="updateLinkRating()" />
           </label>
         </div>
       </div>
-      <h2 style="font-size: 27pt;">Link Rating: {{ Stats.LinkRating }}</h2>
+      <h2>Link Rating: {{ Stats.LinkRating }}</h2>
     </div>
 
     <!-- CARD TEXT SETTINGS -->

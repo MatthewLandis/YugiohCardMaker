@@ -137,10 +137,14 @@
   align-items: center;
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   margin: auto;
   padding: 20px;
+}
+
+h2 {
+  text-align: center;
 }
 
 .monsterType {
@@ -221,10 +225,10 @@
 .LinkRating {
   font-family: 'rogsansrfstd-ub';
   position: absolute;
-  top: 1041px;
-  left: 297px;
+  top: 541px;
+  left: 354px;
   transform: scaleX(1.2);
-  font-size: 20pt;
+  font-size: 11pt;
 }
 
 .PendulumScale {
