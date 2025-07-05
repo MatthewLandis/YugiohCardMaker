@@ -106,7 +106,7 @@
         <p class="hint">Core Settings</p>
         <div *ngIf="['Normal', 'Effect', 'Ritual', 'Fusion', 'Synchro', 'Xyz'].includes(template)" class="flex2">
           <label>Pendulum Template: </label>
-          <input class="input" type="checkbox" [style.accentColor]="'var(--main-color)'" [(ngModel)]="pendulumTemplate"
+          <input class="input" type="checkbox" [style.accentColor]="'#23b879'" [(ngModel)]="pendulumTemplate"
             (change)="autoMonsterTypeAdjustment()" style="width: 24px; height: 24px;" />
         </div>
         <div class="flex2">
@@ -256,11 +256,17 @@
             </textarea>
           </div>
         </div>
-        <div *ngIf="pendulumTemplate" class="flex2">
+      </div>
+
+      <div *ngIf="pendulumTemplate" class="core">
+        <p class="hint">Pendulum Settings</p>
+        <div class="flex2">
+          <img src="assets/leftScale.png">
           <label>Pendulum Scale: </label>
           <select class="input" [(ngModel)]="pendulumScale">
             <option *ngFor="let value of [1,2,3,4,5,6,7,8,9,10,11,12,13]">{{ value }}</option>
           </select>
+          <img src="assets/rightScale.png">
         </div>
         <div *ngIf="pendulumTemplate">
           <p>Pendulum Effect Text: </p>

@@ -364,12 +364,17 @@ h2 {
 .core .hint {
   color: var(--main-color);
   margin-bottom: 1rem;
+  font-style: italic;
 }
 
 .flex2 {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.flex2 img {
+  width: 4.5rem;
 }
 
 .background-cards-container {
