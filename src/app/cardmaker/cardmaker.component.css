@@ -31,10 +31,16 @@
 .cardmaker-content {
   position: relative;
   font-family: monospace;
-  display: flex;
+  height: 0;
 }
 
-.sidebarRight {
+.sidebars {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.sidebarColumn {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -46,14 +52,15 @@
   border: .2rem solid var(--main-color);
   border-radius: .8rem;
   width: 40rem;
-
+  height: fit-content;
 }
 
 .Display {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: top center;
+  transform: translateX(-50%) scale(2);
 }
 
 .print {
@@ -61,6 +68,7 @@
   height: 600px;
   position: relative;
   transform-origin: top center;
+  overflow: hidden;
 }
 
 .CardDisplay {
@@ -78,6 +86,32 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.imageContainer,
+.pendulumContainer {
+  position: absolute;
+}
+
+.imageContainer {
+  top: 111px;
+  left: 49px;
+  width: 302px;
+  height: 311px;
+}
+
+.pendulumContainer {
+  top: 107px;
+  left: 27px;
+  width: 346px;
+  height: 339px;
+}
+
+.imageContainer img,
+.pendulumContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
 .TitleTextbox {
@@ -241,33 +275,6 @@ h2 {
   letter-spacing: -6px;
 }
 
-.imageContainer,
-.pendulumContainer {
-  position: absolute;
-}
-
-.imageContainer {
-  top: 111px;
-  left: 49px;
-  width: 302px;
-  height: 310px;
-}
-
-.pendulumContainer {
-  top: 107px;
-  left: 27px;
-  width: 346px;
-  height: 339px;
-}
-
-.imageContainer img,
-.pendulumContainer img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-}
-
-
 .btn-box {
   position: relative;
   display: flex;
@@ -288,7 +295,6 @@ h2 {
   border-radius: .8rem;
   font-size: 1.8rem;
   font-weight: 600;
-  letter-spacing: .1rem;
   color: var(--main-color);
   z-index: 1;
   overflow: hidden;
@@ -326,10 +332,10 @@ h2 {
   border-radius: 0.6rem;
   border: 0.2rem solid var(--main-color);
   z-index: 1;
+  resize: vertical;
 }
 
-
-.template-dropdown {
+.input {
   display: flex;
   align-items: center;
   padding: 1rem;
@@ -340,27 +346,24 @@ h2 {
   font-size: 1.6rem;
   color: var(--text-color);
   cursor: pointer;
-
 }
 
 .core {
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 1rem;
   background: var(--bg-color);
   border: .2rem solid var(--main-color);
   border-radius: .8rem;
   padding: 1rem;
-  z-index: 1;
-  overflow: hidden;
-  transition: .5s;
 }
 
 .core .hint {
   color: var(--main-color);
   margin-bottom: 1rem;
-  text-align: right;
 }
 
 .flex2 {
@@ -369,61 +372,63 @@ h2 {
   gap: 1rem;
 }
 
-.button-flex {
-  display: flex;
-}
-
 .background-cards-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: -1;
+  z-index: -10;
 }
 
 .cardBox {
   position: absolute;
   width: 12rem;
   height: 17.5rem;
-  background: transparent;
-  border: 2px solid var(--main-color);
-  box-sizing: border-box;
+  background-image: url('/assets/backgroundCard.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   animation: fall-spin 10s linear infinite;
-  opacity: 0;
-  will-change: transform, opacity;
 }
 
-.cardOval {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 5rem;
-  height: 10rem;
-  background: var(--main-color);
-  border-radius: 50%;
-}
-
-/* Keyframes for falling and spinning animation */
 @keyframes fall-spin {
   0% {
     transform: translate(0, -100px) rotateY(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  90% {
-    opacity: 1;
   }
 
   100% {
     transform: translate(0, 120vh) rotateY(360deg);
-    opacity: 0;
+  }
+}
+
+@media (max-width: 1600px) {
+  .sidebars {
+    display: flex;
+    justify-content: space-between;
+    transform-origin: top;
+    transform: scale(.9);
+  }
+
+  .Display {
+    transform-origin: top center;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+@media (max-width: 1300px) {
+  .sidebars {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: -11rem;
+    left: 0rem;
+    transform-origin: left;
+    transform: scale(.8);
+  }
+
+  .Display {
+    transform-origin: top center;
+    transform: translateX(-50%) scale(1.4);
   }
 }

@@ -1,12 +1,10 @@
 .header {
-    font-family: monospace;
-
+  font-family: monospace;
   border-bottom: .2rem solid var(--main-color);
   padding: 2rem;
   background: var(--bg-color);
   align-items: center;
   transition: .3s;
-  margin-bottom: 1rem;
 }
 
 .navbar {

@@ -6,7 +6,7 @@ import { AboutComponent } from './about/about.component';
 
 
 const routes: Routes = [
-  { path: '', component: AboutComponent },
+  { path: '', redirectTo: '/About', pathMatch: 'full' },
   { path: 'About', component: AboutComponent },
   { path: 'CardMaker', component: CardMakerComponent },
 ];
