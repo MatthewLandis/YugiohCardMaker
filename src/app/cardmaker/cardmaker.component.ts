@@ -1,19 +1,19 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 
 @Component({
   selector: 'app-cardmaker',
   templateUrl: './cardmaker.component.html',
   styleUrls: ['./cardmaker.component.css'],
 })
-export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDestroy interface here
+export class CardMakerComponent implements OnInit, OnDestroy { 
   // --- Background Card Animation Properties and References ---
-  @ViewChild('backgroundCardsContainer', { static: true }) backgroundCardsContainerRef!: ElementRef; // <--- NEW
-  private cardCreationInterval: any; // <--- NEW
-  private activeCards: HTMLElement[] = []; // <--- NEW
-  private maxCards: number = 10; // Max number of cards allowed on screen // <--- NEW
+  @ViewChild('backgroundCardsContainer', { static: true }) backgroundCardsContainerRef!: ElementRef;
+  private cardCreationInterval: any;
+  private activeCards: HTMLElement[] = [];
+  private maxCards = 10;
 
-  // --- Card Preview States (Your existing properties) ---
+  // --- Card Preview States  ---
   template = 'Normal';
   pendulumTemplate = false;
   titleStyle = 'Rare';
@@ -26,7 +26,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
   primaryMonsterType = 'Cyberse';
   coreMonsterType = '';
   abilityMonsterType = '';
-  lastMonsterType = 'Normal';
+  lastMonsterType = '';
   attack = '200';
   defense = '2000';
   levelType = 'Level';
@@ -48,9 +48,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
     Spell: ['Normal', 'Continuous', 'Equip', 'Ritual', 'QuickPlay', 'Field'],
     Trap: ['Normal', 'Continuous', 'Counter']
   };
-
   divineBeasts = ['Slifer', 'Obelisk', 'Ra'];
-
   effectTypes: 'Lore' | 'Effect' = 'Lore';
   primaryMonsterTypes = ['Aqua', 'Beast', 'Beast-Warrior', 'Creator God', 'Cyberse', 'Dinosaur', 'Divine-Beast', 'Dragon',
     'Fairy', 'Fiend', 'Fish', 'Insect', 'Illusion', 'Machine', 'Plant', 'Psychic', 'Pyro', 'Reptile',
@@ -58,7 +56,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
   coreMonsterTypes = ['', 'Ritual', 'Fusion', 'Synchro', 'Dark Synchro', 'Xyz', 'Pendulum', 'Link'];
   pendulumMonsterTypes = 'Pendulum';
   abilityMonsterTypes = ['', 'Tuner', 'Spirit', 'Union', 'Gemini', 'Toon', 'Flip'];
-  lastMonsterTypes = ['', 'Effect', 'Normal', 'Token', 'Skill'];
+  lastMonsterTypes = ['', 'Effect', 'Token', 'Skill'];
   showCoreType = false;
   showAbilityType = false;
   linkArrows = {
@@ -127,7 +125,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
 
   private removeCard(card: HTMLElement): void {
     if (this.backgroundCardsContainerRef && this.backgroundCardsContainerRef.nativeElement &&
-        this.backgroundCardsContainerRef.nativeElement.contains(card)) {
+      this.backgroundCardsContainerRef.nativeElement.contains(card)) {
       this.renderer.removeChild(this.backgroundCardsContainerRef.nativeElement, card);
     }
     this.activeCards = this.activeCards.filter(c => c !== card);
@@ -194,7 +192,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
     const effectTemplates = ['Effect', 'Slifer', 'Obelisk', 'Ra', 'Skill'];
 
     this.lastMonsterType =
-      this.template === 'Normal' ? 'Normal' :
+      this.template === 'Normal' ? '' :
         this.template === 'Token' ? 'Token' :
           this.template === 'Skill' ? 'Skill' :
             this.coreTemplates.includes(this.template) ? (this.effectTypes === 'Effect' ? 'Effect' : '') :
@@ -346,65 +344,22 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
   // --- Image Generation Function ---
   async generateCardPng(): Promise<void> {
     const printElement = this.cardPrintArea.nativeElement;
-    const displayElement = this.displayContainer.nativeElement;
-
-    if (!printElement || !displayElement) {
-      console.error('Error: Card print area or display container not found. Ensure #card-print-area and #displayContainer are correctly set in your HTML.');
-      return;
-    }
-
-    this.originalScaleTitle = this.scaleTitle;
-    this.originalScaleMonsterType = this.scaleMonsterType;
-    this.originalScaleEffect = this.scaleEffect;
-    this.originalScalePendulumEffect = this.scalePendulumEffect;
-    this.originalSpellscaleEffect = this.SpellscaleEffect;
-
-    this.scaleTitle = 1;
-    this.scaleMonsterType = 1;
-    this.scalePendulumEffect = 1;
-    this.scaleEffect = 1;
-    this.SpellscaleEffect = 1;
-
-    this.renderer.setStyle(displayElement, 'transform', 'translateX(-50%) scale(1)');
-    this.renderer.setStyle(displayElement, 'transform-origin', 'top center');
-
-    await new Promise(resolve => setTimeout(resolve, 150));
-
+    await document.fonts.ready;
+    await new Promise(resolve => setTimeout(resolve, 100));
     try {
-      const canvas = await html2canvas(printElement, {
-        scale: 3,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: null,
-        width: 400,
-        height: 600,
+      const dataUrl = await toPng(printElement, {
+        cacheBust: true,
+        pixelRatio: 3,
       });
-
-      const imageDataUrl = canvas.toDataURL('image/png');
-      const downloadLink = this.renderer.createElement('a');
-
-      this.renderer.setAttribute(downloadLink, 'href', imageDataUrl);
-      this.renderer.setAttribute(downloadLink, 'download', `${this.title || 'yugioh_card'}.png`);
-
-      this.renderer.appendChild(document.body, downloadLink);
-      downloadLink.click();
-      this.renderer.removeChild(document.body, downloadLink);
-
-      console.log(`Card "${downloadLink.download}" successfully generated and downloaded.`);
-
+      const link = document.createElement('a');
+      link.download = `${this.title || 'card'}.png`;
+      link.href = dataUrl;
+      link.click();
     } catch (error) {
-      console.error('Failed to generate card image:', error);
-    } finally {
-      this.scaleTitle = this.originalScaleTitle;
-      this.scaleMonsterType = this.originalScaleMonsterType;
-      this.scalePendulumEffect = this.originalScalePendulumEffect;
-      this.scaleEffect = this.originalScaleEffect;
-      this.SpellscaleEffect = this.originalSpellscaleEffect;
-
-      this.renderer.removeStyle(displayElement, 'transform');
-      this.renderer.removeStyle(displayElement, 'transform-origin');
+      console.error('Error generating image:', error);
     }
   }
+
 
   // --- NEW: ngOnDestroy for cleanup ---
   ngOnDestroy(): void {
@@ -416,7 +371,7 @@ export class CardMakerComponent implements OnInit, OnDestroy { // <--- ADD OnDes
     // Remove all active cards from the DOM to prevent memory leaks
     this.activeCards.forEach(card => {
       if (this.backgroundCardsContainerRef && this.backgroundCardsContainerRef.nativeElement &&
-          this.backgroundCardsContainerRef.nativeElement.contains(card)) {
+        this.backgroundCardsContainerRef.nativeElement.contains(card)) {
         this.renderer.removeChild(this.backgroundCardsContainerRef.nativeElement, card);
       }
     });

@@ -83,8 +83,8 @@
             </p>
           </div>
           <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
-            <p class="atkDef" style=" left: 250px;">{{ attack }}</p>
-            <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 331px;">{{ defense }}</p>
+            <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
+            <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
           </div>
           <p class="LinkRating" *ngIf="template === 'Link'">{{ linkRating }}</p>
         </div>
@@ -251,7 +251,7 @@
         <div *ngIf="!['Spell', 'Trap'].includes(template)">
           <p>Monster {{effectTypes}} Text:</p>
           <div class="textarea-field">
-            <textarea [(ngModel)]="effectText" rows="9" cols="54"
+            <textarea [(ngModel)]="effectText" rows="8" cols="54"
               [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}" (input)="adjustEffectText()">
             </textarea>
           </div>
@@ -271,13 +271,13 @@
         <div *ngIf="pendulumTemplate">
           <p>Pendulum Effect Text: </p>
           <div class="textarea-field">
-            <textarea [(ngModel)]="pendulumEffectText" rows="9" cols="54" (input)="adjustPendulumEffectText()">
+            <textarea [(ngModel)]="pendulumEffectText" rows="8" cols="54" (input)="adjustPendulumEffectText()">
             </textarea>
           </div>
         </div>
         <div *ngIf="['Spell', 'Trap'].includes(template)">
           <p>{{template}} Effect Text:</p>
-          <textarea [(ngModel)]="effectText" rows="9" cols="54" (input)="adjustSpellEffectText()">
+          <textarea [(ngModel)]="effectText" rows="8" cols="54" (input)="adjustSpellEffectText()">
           </textarea>
         </div>
       </div>

@@ -65,7 +65,7 @@
 
 .print {
   width: 400px;
-  height: 600px;
+  height: 583px;
   position: relative;
   transform-origin: top center;
   overflow: hidden;
@@ -94,14 +94,14 @@
 }
 
 .imageContainer {
-  top: 111px;
+  top: 107px;
   left: 49px;
   width: 302px;
   height: 311px;
 }
 
 .pendulumContainer {
-  top: 107px;
+  top: 104px;
   left: 27px;
   width: 346px;
   height: 339px;
@@ -183,9 +183,9 @@ h2 {
 
 .monsterType {
   position: absolute;
-  top: 445px;
+  top: 432px;
   left: 29px;
-  font-size: 13pt;
+  font-size: 12pt;
   font-family: 'yugiohmonstertype';
   white-space: nowrap;
   overflow: hidden;
@@ -194,6 +194,7 @@ h2 {
 
 .monsterType .bracket {
   margin: 2px;
+  font-size: 11pt;
 }
 
 .monsterType .content {
@@ -202,14 +203,14 @@ h2 {
 }
 
 .monsterType .slash {
-  margin: 2px;
+  margin: 1px;
 }
 
 .CardEffectTextbox {
   position: absolute;
-  top: 470px;
+  top: 453px;
   left: 32px;
-  width: 337px;
+  width: 335px;
   transform-origin: left center;
 }
 
@@ -233,10 +234,8 @@ h2 {
   text-align: justify;
   transform-origin: left;
   line-height: 1;
-  white-space: pre-line;
-  font-size: 10pt;
-  letter-spacing: -0.2pt;
-  word-spacing: -1pt;
+  font-size: 10.4pt;
+  word-spacing: -2px;
 }
 
 .PendulumText,
@@ -249,11 +248,12 @@ h2 {
 }
 
 .atkDef {
-  position: absolute;
-  font-size: 14pt;
-  font-family: 'matrixboldsmallcaps';
-  text-align: right;
-  top: 547px;
+    position: absolute;
+    font-size: 13.5pt;
+    font-family: 'matrixboldsmallcaps';
+    top: 532px;
+    text-align: right;
+    width: 100px;
 }
 
 .LinkRating {
@@ -267,7 +267,7 @@ h2 {
 
 .PendulumScale {
   position: absolute;
-  top: 300pt;
+  top: 39rem;
   font-family: 'matrixboldfractions';
   font-size: 30pt;
   text-align: center;
