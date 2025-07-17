@@ -13,6 +13,9 @@
   --second-bg-color: #16325c;
   --text-color: #ededed;
   --main-color: #2196f3;
+
+    --second-bg-color-rgb: 22, 50, 92; /* RGB for #16325c */
+
 }
 
 html {
@@ -22,4 +25,5 @@ html {
 
 body {
   background: var(--bg-color);
+  overflow: hidden;
 }

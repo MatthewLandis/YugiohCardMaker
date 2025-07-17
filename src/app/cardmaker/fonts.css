@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'matrixregularsmallcaps';
+  src: url('../../../public/assets/fonts/MatrixRegularSmallCaps.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'yugiohmonstertype';
+  src: url('../../../public/assets/fonts/monsterType.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'matrixboldsmallcaps';
+  src: url('../../../public/assets/fonts/MatrixBoldSmallCaps.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'rogsansrfstd-ub';
+  src: url('../../../public/assets/fonts/RoGSanSrfStd-UB.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'matrixboldfractions';
+  src: url('../../../public/assets/fonts/MatrixBoldFractions.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'lore';
+  src: url('../../../public/assets/fonts/lore.ttf') format('truetype');
+}
