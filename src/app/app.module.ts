@@ -5,16 +5,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { AboutComponent } from './about/about.component';
 import { CardMakerComponent } from './cardmaker/cardmaker.component';
+import { BackgroundAnimationComponent } from './background-animation';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    AboutComponent,
     CardMakerComponent,
+    BackgroundAnimationComponent,
   ],
   imports: [
     BrowserModule,

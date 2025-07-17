@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { toPng } from 'html-to-image';
 
 @Component({
@@ -6,14 +6,8 @@ import { toPng } from 'html-to-image';
   templateUrl: './cardmaker.component.html',
   styleUrls: ['./cardmaker.component.css'],
 })
-export class CardMakerComponent implements OnInit, OnDestroy { 
-  // --- Background Card Animation Properties and References ---
-  @ViewChild('backgroundCardsContainer', { static: true }) backgroundCardsContainerRef!: ElementRef;
-  private cardCreationInterval: any;
-  private activeCards: HTMLElement[] = [];
-  private maxCards = 10;
-
-  // --- Card Preview States  ---
+export class CardMakerComponent {
+  // --- Card Preview States  ---
   template = 'Normal';
   pendulumTemplate = false;
   titleStyle = 'Rare';
@@ -38,16 +32,11 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   pendulumEffectText = "Once per turn: You can target 1 face-up monster your opponent controls; halve its original ATK.";
 
   // --- Card Array data Holders (Your existing properties) ---
-  templates = ['Normal', 'Effect', 'Ritual', 'Fusion', 'Synchro', 'Xyz', 'Link', 'Token', 'Spell', 'Trap',
-    'Skill', 'Slifer', 'Obelisk', 'Ra', 'Dark Synchro', 'Legendary Dragon'];
   coreTemplates = ['Ritual', 'Fusion', 'Synchro', 'Dark Synchro', 'Xyz', 'Link'];
   titleStyles = ['Common', 'Rare', 'SecretRare', 'UltraRare', 'Skill'];
-  attributes = ['Dark', 'Light', 'Earth', 'Wind', 'Fire', 'Water', 'Divine', 'Spell', 'Trap', 'No Attribute'];
-  levelTypes = ['Level', 'Rank', 'Negative Level'];
-  spellTrapTypes: { Spell: string[]; Trap: string[] } = {
-    Spell: ['Normal', 'Continuous', 'Equip', 'Ritual', 'QuickPlay', 'Field'],
-    Trap: ['Normal', 'Continuous', 'Counter']
-  };
+  levelTypes = ['Level', 'Rank', 'Nlevel'];
+  spellTypes = ['Normal', 'Continuous', 'Equip', 'Ritual', 'QuickPlay', 'Field'];
+  trapTypes = ['Normal', 'Continuous', 'Counter'];
   divineBeasts = ['Slifer', 'Obelisk', 'Ra'];
   effectTypes: 'Lore' | 'Effect' = 'Lore';
   primaryMonsterTypes = ['Aqua', 'Beast', 'Beast-Warrior', 'Creator God', 'Cyberse', 'Dinosaur', 'Divine-Beast', 'Dragon',
@@ -77,67 +66,10 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   // --- Private property for temporary canvas context ---
   private context!: CanvasRenderingContext2D;
 
-  // --- Properties to store original scale values for restoration ---
-  private originalScaleTitle!: number;
-  private originalScaleMonsterType!: number;
-  private originalScaleEffect!: number;
-  private originalScalePendulumEffect!: number;
-  private originalSpellscaleEffect!: number;
-
-  constructor(private renderer: Renderer2) { }
-
-  ngOnInit(): void {
-    const tempCanvas = document.createElement('canvas');
-    this.context = tempCanvas.getContext('2d')!;
-
-    // --- NEW: Start background card animation ---
-    this.cardCreationInterval = setInterval(() => {
-      this.createCard();
-    }, 500); // Create a new card every 0.5 seconds
-  }
-
-  // --- NEW: Background Card Animation Methods ---
-  private createCard(): void {
-    if (this.activeCards.length >= this.maxCards) {
-      return; // Stop creating new cards if the limit is hit
-    }
-
-    const cardBox = this.renderer.createElement('div');
-    this.renderer.addClass(cardBox, 'cardBox');
-
-    const randomLeft = Math.random() * 100;
-    this.renderer.setStyle(cardBox, 'left', `${randomLeft}vw`);
-
-    const randomDuration = 8 + Math.random() * 4;
-    this.renderer.setStyle(cardBox, 'animation-duration', `${randomDuration}s`);
-
-    if (this.backgroundCardsContainerRef && this.backgroundCardsContainerRef.nativeElement) {
-      this.renderer.appendChild(this.backgroundCardsContainerRef.nativeElement, cardBox);
-      this.activeCards.push(cardBox);
-
-      this.renderer.listen(cardBox, 'animationend', () => {
-        this.removeCard(cardBox);
-      });
-    } else {
-      console.error('Error: backgroundCardsContainerRef.nativeElement is not available. Check HTML template reference.');
-    }
-  }
-
-  private removeCard(card: HTMLElement): void {
-    if (this.backgroundCardsContainerRef && this.backgroundCardsContainerRef.nativeElement &&
-      this.backgroundCardsContainerRef.nativeElement.contains(card)) {
-      this.renderer.removeChild(this.backgroundCardsContainerRef.nativeElement, card);
-    }
-    this.activeCards = this.activeCards.filter(c => c !== card);
-  }
-  // --- END NEW BACKGROUND CARD METHODS ---
-
-
   // --- UI Update Logic (Your existing methods) ---
-  templateUpdate(event: Event) {
-    this.template = (event.target as HTMLSelectElement).value;
+  templateUpdate(type: string) {
+    this.template = (type);
     this.updateTitleStyle();
-    this.updateAttribute();
     this.updateLevelType();
     this.updatePrimaryMonsterType();
     this.updateCoreMonsterType();
@@ -152,8 +84,9 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   }
 
   pendulumUpdate() {
-    const pendulumCoverTemplates = ['Normal', 'Effect', 'Fusion', 'Synchro', 'Ritual', 'Xyz'];
-    this.pendulumTemplate = pendulumCoverTemplates.includes(this.template);
+    const pendulumSupported = ['Normal', 'Effect', 'Fusion', 'Synchro', 'Ritual', 'Xyz'];
+    this.pendulumTemplate = pendulumSupported.includes!(this.template);
+    this.pendulumTemplate = false;
   }
 
   updateTitleStyle() {
@@ -161,11 +94,12 @@ export class CardMakerComponent implements OnInit, OnDestroy {
       (['Spell', 'Trap', 'Xyz'].includes(this.template) ? 'Rare' : 'Common');
   }
 
-  updateAttribute() {
-    this.attribute =
-      this.template === 'Spell' ? 'Spell' :
-        this.template === 'Trap' ? 'Trap' :
-          this.divineBeasts.includes(this.template) ? 'Divine' : 'Dark';
+  updateAttribute(attribute:string) {
+    this.attribute = (attribute);
+  }
+
+  updateLevelValue(level: number) {
+    this.level = (level);
   }
 
   updateLevelType() {
@@ -216,14 +150,7 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   }
 
   resetSpellTrapType() {
-    if (['Spell', 'Trap'].includes(this.template)) {
-      const validTypes = this.spellTrapTypes[this.template as 'Spell' | 'Trap'];
-      if (!validTypes.includes(this.spellTrapType)) {
-        this.spellTrapType = 'Normal';
-      }
-    } else {
-      this.spellTrapType = 'Normal';
-    }
+
   }
 
   // --- Image Upload ---
@@ -246,16 +173,10 @@ export class CardMakerComponent implements OnInit, OnDestroy {
 
   // --- Text Adjustment Functions ---
   autoTitleTextAdjustment() {
-    const cardTitleElement = document.querySelector('.CardTitle') as HTMLElement;
-    if (!cardTitleElement) return;
+    const cardTitleSize = document.querySelector('.CardTitle') as HTMLElement;
 
-    if (!this.context) {
-      console.warn('Canvas context not initialized for text measurement.');
-      return;
-    }
-
-    const computedStyle = window.getComputedStyle(cardTitleElement);
-    this.context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+    const { fontSize, fontFamily } = window.getComputedStyle(cardTitleSize);
+    this.context.font = `${fontSize} ${fontFamily}`;
 
     const textWidth = this.context.measureText(this.title).width;
     const textboxWidth = 306;
@@ -265,12 +186,6 @@ export class CardMakerComponent implements OnInit, OnDestroy {
 
   autoMonsterTypeAdjustment() {
     const monsterTypeElement = document.querySelector('.monsterType') as HTMLElement;
-    if (!monsterTypeElement) return;
-
-    if (!this.context) {
-      console.warn('Canvas context not initialized for text measurement.');
-      return;
-    }
 
     const computedStyle = window.getComputedStyle(monsterTypeElement);
     this.context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
@@ -282,19 +197,13 @@ export class CardMakerComponent implements OnInit, OnDestroy {
       (this.lastMonsterType ? '/' + this.lastMonsterType : '') + ']';
 
     const textWidth = this.context.measureText(monsterTypeText).width;
-    const textboxWidth = 350;
+    const textboxWidth = 330;
 
     this.scaleMonsterType = textWidth > textboxWidth ? textboxWidth / textWidth : 1;
   }
 
   adjustEffectText() {
     const loreTextElement = document.querySelector('.loreText') as HTMLElement;
-    if (!loreTextElement) return;
-
-    if (!this.context) {
-      console.warn('Canvas context not initialized for text measurement.');
-      return;
-    }
 
     const computedStyle = window.getComputedStyle(loreTextElement);
     this.context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
@@ -307,12 +216,6 @@ export class CardMakerComponent implements OnInit, OnDestroy {
 
   adjustPendulumEffectText() {
     const pendulumTextElement = document.querySelector('.PendulumText') as HTMLElement;
-    if (!pendulumTextElement) return;
-
-    if (!this.context) {
-      console.warn('Canvas context not initialized for text measurement.');
-      return;
-    }
 
     const computedStyle = window.getComputedStyle(pendulumTextElement);
     this.context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
@@ -325,12 +228,6 @@ export class CardMakerComponent implements OnInit, OnDestroy {
 
   adjustSpellEffectText() {
     const spellTextElement = document.querySelector('.spellText') as HTMLElement;
-    if (!spellTextElement) return;
-
-    if (!this.context) {
-      console.warn('Canvas context not initialized for text measurement.');
-      return;
-    }
 
     const computedStyle = window.getComputedStyle(spellTextElement);
     this.context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
@@ -344,37 +241,13 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   // --- Image Generation Function ---
   async generateCardPng(): Promise<void> {
     const printElement = this.cardPrintArea.nativeElement;
-    await document.fonts.ready;
-    await new Promise(resolve => setTimeout(resolve, 100));
-    try {
-      const dataUrl = await toPng(printElement, {
-        cacheBust: true,
-        pixelRatio: 3,
-      });
-      const link = document.createElement('a');
-      link.download = `${this.title || 'card'}.png`;
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error('Error generating image:', error);
-    }
-  }
-
-
-  // --- NEW: ngOnDestroy for cleanup ---
-  ngOnDestroy(): void {
-    // Clear the interval to stop creating new cards
-    if (this.cardCreationInterval) {
-      clearInterval(this.cardCreationInterval);
-    }
-
-    // Remove all active cards from the DOM to prevent memory leaks
-    this.activeCards.forEach(card => {
-      if (this.backgroundCardsContainerRef && this.backgroundCardsContainerRef.nativeElement &&
-        this.backgroundCardsContainerRef.nativeElement.contains(card)) {
-        this.renderer.removeChild(this.backgroundCardsContainerRef.nativeElement, card);
-      }
+    const dataUrl = await toPng(printElement, {
+      cacheBust: true,
+      pixelRatio: 3,
     });
-    this.activeCards = []; // Clear the array after removing all elements
+    const link = document.createElement('a');
+    link.download = `${this.title}.png`;
+    link.href = dataUrl;
+    link.click();
   }
 }

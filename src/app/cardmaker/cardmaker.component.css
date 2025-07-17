@@ -28,40 +28,223 @@
   src: url('../../../public/assets/fonts/lore.ttf') format('truetype');
 }
 
-.cardmaker-content {
-  position: relative;
-  font-family: monospace;
-  height: 0;
+
+.app-container {
+display: flex;
+    grid-column-gap: 10px;
+    -webkit-column-gap: 10px;
+    column-gap: 10px;
+    min-height: 100vh;
+    max-width: 1600px;
+    margin: auto;
 }
 
-.sidebars {
-  display: flex;
-  justify-content: space-between;
-  margin: 1rem;
+.app-container .card-info-panel {
+  flex: 3 1;
+    padding: 10px;
+    background-color: #404040;
+    border: 2px solid #444040;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    color: hsla(0, 0%, 100%, 0.8);
+    text-shadow: 0 1px #222;
+    position: relative;
 }
-
-.sidebarColumn {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  font-size: 2rem;
-  color: var(--text-color);
-  background-color: var(--second-bg-color);
-  border: .2rem solid var(--main-color);
-  border-radius: .8rem;
-  width: 40rem;
-  height: fit-content;
-}
+/* ... (rest of your CSS, including .header, .Display, .templateRow, etc.) ... */
 
 .Display {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform-origin: top center;
-  transform: translateX(-50%) scale(2);
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+/* Remove the old .title styles if they are no longer needed for the P tag */
+/* .title {
+    font-size: 3rem;
+    text-align: center;
+} */
+
+.app-header {
+display: inline-grid;
+    grid-template-columns: -webkit-max-content 1fr;
+    grid-template-columns: max-content 1fr;
+    margin-bottom: 10px;
+    background-color: #333;
+    padding: 4px 10px 4px 4px;
+    border-radius: 3px;
+    box-shadow: inset 0 0 2px 1px #212121;
+}
+
+
+.app-description {
+border-left: 1px dashed #b1b1b1;
+    padding-left: 10px;
+    margin-left: 5px;
+}
+
+.app-header .app-description h1 {
+font-family: MatrixBoldSmallCaps;
+    margin: 0;
+    line-height: 1;
+    font-size: 30px;
+    color: #e6e6e6;
+    text-shadow: -1px 1px 2px #1b1b1b;
+}
+
+
+/* Container for the buttons */
+.templateRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Base styles for all buttons in this row to avoid repetition */
+.templateRow button {
+  color: antiquewhite;
+  font-weight: bold;
+  padding: 1rem 2rem; /* You might need to adjust padding based on image size */
+  background-size: cover; /* Ensures the background image covers the button area */
+  background-position: right; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  border-radius: 0.5rem; /* Slightly rounded corners for buttons */
+  cursor: pointer; /* Indicate it's clickable */
+  font-size: 1.6rem; /* Example font-size */
+  flex-grow: 1; /* Allows buttons to grow and fill available space */
+  min-width: 100px; /* Ensures buttons don't get too small */
+  text-align: center; /* Ensures text is centered if padding varies */
+  transition: filter 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.templateRow button:hover {
+  filter: brightness(1.1); /* Slightly brightens the button on hover */
+}
+
+/* Individual button styles with background images */
+.normal {background-image: url(/assets/buttons/NormalButton.png);}
+.effect {background-image: url(/assets/buttons/EffectButton.png);}
+.ritual {background-image: url(/assets/buttons/RitualButton.png);}
+.fusion {background-image: url(/assets/buttons/FusionButton.png);}
+.synchro {background-image: url(/assets/buttons/SynchroButton.png);}
+.xyz {background-image: url(/assets/buttons/XyzButton.png);}
+.link {background-image: url(/assets/buttons/LinkButton.png);}
+.spell {background-image: url(/assets/buttons/SpellButton.png);}
+.trap {background-image: url(/assets/buttons/TrapButton.png);}
+.token {background-image: url(/assets/buttons/TokenButton.png);}
+.skill {background-image: url(/assets/buttons/SkillButton.png);}
+.other {background-image: url(/assets/buttons/OtherButton.png);}
+
+.synchro, .other {
+  color: rgb(36, 36, 36) !important;
+}
+
+.attributeRow {
+    gap: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.attributeRow button{
+  padding: 2.5rem; /* You might need to adjust padding based on image size */
+  background-size: 35px; /* Ensures the background image covers the button area */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  background-color: transparent;
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.dark {background-image: url(/assets/buttons/DarkButton.png);}
+.light {background-image: url(/assets/buttons/LightButton.png);}
+.earth {background-image: url(/assets/buttons/EarthButton.png);}
+.wind {background-image: url(/assets/buttons/WindButton.png);}
+.fire {background-image: url(/assets/buttons/FireButton.png);}
+.water {background-image: url(/assets/buttons/WaterButton.png);}
+.divine {background-image: url(/assets/buttons/DivineButton.png);}
+
+.levelRow {
+  padding: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.levelRow button{
+  color: var(--text-color);
+  background: transparent;
+}
+
+.row {
+  display: flex;
+  gap: 1rem; 
+}
+
+.row2 {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem; 
+}
+
+.flex3 {
+  background: var(--bg-color);
+  border-radius: .8rem;
+  border: solid 2px var(--main-color);
+  box-shadow: 2px #bd920f;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.row .flex3:nth-child(1) { /* Target the first .flex3 directly within .row */
+    flex-grow: 1;
+}
+
+.row .flex3:nth-child(2) { /* Target the second .flex3 directly within .row */
+    flex-grow: 0; /* Make it grow, but proportionally less than the first */
+}
+
+label {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  text-align: right;
+  padding: 1rem;
+  min-width: 12rem;
+  background: var(--second-bg-color);
+}
+
+label img {
+  width: 30px;
+}
+
+.input {
+  padding: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Adjust cursor for text input vs select */
+.input[type="text"] {
+    cursor: text;
+}
+
+.input select {
+    cursor: pointer;
+    appearance: none; /* Removes default dropdown arrow in some browsers */
+    /* You might need to add a custom arrow using background-image for the select */
+}
+
+
+
+
+
+
+
+
 
 .print {
   width: 400px;
@@ -97,14 +280,14 @@
   top: 107px;
   left: 49px;
   width: 302px;
-  height: 311px;
+  height: 303px;
 }
 
 .pendulumContainer {
   top: 104px;
   left: 27px;
   width: 346px;
-  height: 339px;
+  height: 329px;
 }
 
 .imageContainer img,
@@ -116,9 +299,9 @@
 
 .TitleTextbox {
   position: absolute;
-  top: 28px;
-  left: 26px;
-  width: 306px;
+  top: 30px;
+  left: 31px;
+  width: 304px;
   height: 38px;
   overflow: hidden;
   display: flex;
@@ -127,7 +310,8 @@
 }
 
 .CardTitle {
-  font-size: 40pt;
+  font-size: 45.4px;
+  letter-spacing: .4px;
   font-family: 'matrixregularsmallcaps';
   white-space: nowrap;
   transform-origin: left center;
@@ -185,7 +369,7 @@ h2 {
   position: absolute;
   top: 432px;
   left: 29px;
-  font-size: 12pt;
+  font-size: 16px;
   font-family: 'yugiohmonstertype';
   white-space: nowrap;
   overflow: hidden;
@@ -194,7 +378,7 @@ h2 {
 
 .monsterType .bracket {
   margin: 2px;
-  font-size: 11pt;
+  font-size: 14px;
 }
 
 .monsterType .content {
@@ -210,7 +394,7 @@ h2 {
   position: absolute;
   top: 453px;
   left: 32px;
-  width: 335px;
+  width: 336px;
   transform-origin: left center;
 }
 
@@ -234,8 +418,9 @@ h2 {
   text-align: justify;
   transform-origin: left;
   line-height: 1;
-  font-size: 10.4pt;
-  word-spacing: -2px;
+  font-size: 14px;
+  word-spacing: -1.7px;
+  font-family: 'MatrixBook';
 }
 
 .PendulumText,
@@ -243,13 +428,13 @@ h2 {
   text-align: justify;
   line-height: 1;
   white-space: pre-line;
-  font-size: 10pt;
+  font-size: 13px;
   font-family: 'MatrixBook';
 }
 
 .atkDef {
     position: absolute;
-    font-size: 13.5pt;
+    font-size: 18px;
     font-family: 'matrixboldsmallcaps';
     top: 532px;
     text-align: right;
@@ -262,14 +447,14 @@ h2 {
   top: 541px;
   left: 354px;
   transform: scaleX(1.2);
-  font-size: 11pt;
+  font-size: 15px;
 }
 
 .PendulumScale {
   position: absolute;
   top: 39rem;
   font-family: 'matrixboldfractions';
-  font-size: 30pt;
+  font-size: 40px;
   text-align: center;
   width: 100pt;
   letter-spacing: -6px;
@@ -321,119 +506,3 @@ h2 {
   width: 100%;
 }
 
-.textarea-field textarea {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 1rem;
-  font-size: 1.6rem;
-  color: var(--text-color);
-  background: transparent;
-  border-radius: 0.6rem;
-  border: 0.2rem solid var(--main-color);
-  z-index: 1;
-  resize: vertical;
-}
-
-.input {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  height: 5rem;
-  background-color: var(--bg-color);
-  border: .2rem solid var(--main-color);
-  border-radius: .8rem;
-  font-size: 1.6rem;
-  color: var(--text-color);
-  cursor: pointer;
-}
-
-.core {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1rem;
-  background: var(--bg-color);
-  border: .2rem solid var(--main-color);
-  border-radius: .8rem;
-  padding: 1rem;
-}
-
-.core .hint {
-  color: var(--main-color);
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-.flex2 {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.flex2 img {
-  width: 4.5rem;
-}
-
-.background-cards-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
-}
-
-.cardBox {
-  position: absolute;
-  width: 12rem;
-  height: 17.5rem;
-  background-image: url('/assets/backgroundCard.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: fall-spin 10s linear infinite;
-}
-
-@keyframes fall-spin {
-  0% {
-    transform: translate(0, -100px) rotateY(0deg);
-  }
-
-  100% {
-    transform: translate(0, 120vh) rotateY(360deg);
-  }
-}
-
-@media (max-width: 1600px) {
-  .sidebars {
-    display: flex;
-    justify-content: space-between;
-    transform-origin: top;
-    transform: scale(.9);
-  }
-
-  .Display {
-    transform-origin: top center;
-    transform: translateX(-50%) scale(1.1);
-  }
-}
-
-@media (max-width: 1300px) {
-  .sidebars {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: -11rem;
-    left: 0rem;
-    transform-origin: left;
-    transform: scale(.8);
-  }
-
-  .Display {
-    transform-origin: top center;
-    transform: translateX(-50%) scale(1.4);
-  }
-}

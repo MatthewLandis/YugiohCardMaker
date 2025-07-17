@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CardMakerComponent } from './cardmaker/cardmaker.component';
-import { AboutComponent } from './about/about.component';
 
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/About', pathMatch: 'full' },
-  { path: 'About', component: AboutComponent },
+  { path: '', redirectTo: '/CardMaker', pathMatch: 'full' },
   { path: 'CardMaker', component: CardMakerComponent },
 ];
 
