@@ -1,0 +1,265 @@
+.cardPreview {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.print {
+  width: 400px;
+  height: 583px;
+  position: relative;
+}
+
+.CardDisplay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.CardDisplay img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.imageContainer,
+.pendulumContainer {
+  position: absolute;
+}
+
+.imageContainer {
+  top: 107px;
+  left: 49px;
+  width: 302px;
+  height: 303px;
+}
+
+.pendulumContainer {
+  top: 104px;
+  left: 27px;
+  width: 346px;
+  height: 329px;
+}
+
+.imageContainer img,
+.pendulumContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.TitleTextbox {
+  position: absolute;
+  top: 30px;
+  left: 31px;
+  width: 304px;
+  height: 38px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.CardTitle {
+  font-size: 45.4px;
+  letter-spacing: .4px;
+  font-family: 'matrixregularsmallcaps';
+  white-space: nowrap;
+  transform-origin: left center;
+}
+
+.Common {
+  color: black;
+}
+
+.Rare {
+  color: white;
+}
+
+.SecretRare {
+  background-image: linear-gradient(#fff211 35%, #fffff8 40%, #fff211 48%, #bd920f 53%, #f7ce1e 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: grayscale(100%) drop-shadow(-1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 -1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px rgba(0, 0, 0, 0.3)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+.UltraRare {
+  background-image: linear-gradient(#fff211 35%, #fffff8 40%, #fff211 48%, #bd920f 53%, #f7ce1e 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+.Barian {
+  background-image: linear-gradient(#ff3b6a 35%, #ffb6d5 40%, #ff3b6a 48%, #b8004c 53%, #ff5eae 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+.skillFont {
+  color: white;
+  font-size: 57px;
+  font-family: Arial;
+  font-weight: 700;
+  -webkit-text-stroke: 2px black;
+  -webkit-text-fill-color: white;
+  letter-spacing: -4px;
+}
+
+.linkArrowsGrid {
+  /* Changed from .link-arrow-grid to .linkArrowsGrid to match HTML */
+  display: grid;
+  width: 140px;
+  /* Adjust as needed */
+  height: 140px;
+  /* Adjust as needed */
+  grid-template-columns: repeat(3, 1fr);
+  /* Creates 3 columns of equal width */
+  grid-template-rows: repeat(3, 1fr);
+  /* Creates 3 rows of equal height */
+  gap: 1px;
+  /* Shorthand for grid-column-gap and grid-row-gap */
+}
+
+/* Optional: Add some basic styling for the cells to visualize the grid */
+.linkArrowsGrid .cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.linkArrowsGrid .cell.center {}
+
+
+.monsterType {
+  position: absolute;
+  top: 432px;
+  left: 29px;
+  font-size: 16px;
+  font-family: 'yugiohmonstertype';
+  white-space: nowrap;
+  overflow: hidden;
+  transform-origin: left center;
+}
+
+.monsterType .bracket {
+  margin: 2px;
+  font-size: 14px;
+}
+
+.monsterType .content {
+  position: relative;
+  top: 2px;
+}
+
+.monsterType .slash {
+  margin: 1px;
+}
+
+.CardEffectTextbox {
+  position: absolute;
+  top: 453px;
+  left: 32px;
+  width: 336px;
+  height: 76px;
+  transform-origin: left center;
+  overflow: hidden;
+  /* Recommended to prevent vertical overflow if height is fixed */
+
+}
+
+.loreText {
+  text-align: justify;
+  transform-origin: left;
+  line-height: 1;
+  font-size: 14px;
+  font-family: 'MatrixBook';
+  white-space: pre-wrap;
+  transition: transform 0.1s ease-out, font-size 0.1s ease-out;
+}
+
+.SpellTrapTextbox {
+  position: absolute;
+  top: 866px;
+  left: -356px;
+  width: 672px;
+  transform-origin: left center;
+}
+
+.PendulumEffectTextbox {
+  position: absolute;
+  top: 378px;
+  left: 62px;
+  width: 278px;
+  transform-origin: left center;
+}
+
+
+
+.PendulumText,
+.spellText {
+  text-align: justify;
+  line-height: 1;
+  white-space: pre-line;
+  font-size: 13px;
+  font-family: 'MatrixBook';
+}
+
+.atkDef {
+  position: absolute;
+  font-size: 18px;
+  font-family: 'matrixboldsmallcaps';
+  top: 532px;
+  text-align: right;
+  width: 100px;
+}
+
+.LinkRating {
+  font-family: 'rogsansrfstd-ub';
+  position: absolute;
+  top: 525px;
+  left: 354px;
+  transform: scaleX(1.2);
+  font-size: 15px;
+}
+
+.PendulumScale {
+  position: absolute;
+  top: 39rem;
+  font-family: 'matrixboldfractions';
+  font-size: 40px;
+  text-align: center;
+  width: 100pt;
+  letter-spacing: -6px;
+}
+
+
+
+@media (min-width: 1300px) {
+  .card {
+    transform: scale(1.2);
+  }
+}
+
+@media (min-width: 2000px) {
+  .card {
+    transform: scale(2.2);
+  }
+
+  .cardMaker {
+    transform: scale(1.2);
+    transform-origin: top right;
+  }
+}

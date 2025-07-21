@@ -1,0 +1,488 @@
+.cardMaker-content {
+  display: flex;
+}
+
+.cardMaker {
+  right: 0;
+  font-family: monospace;
+  background-color: rgba(var(--second-bg-color-rgb), 0.8);
+  border: 0.2rem solid var(--main-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  gap: 1rem;
+  min-height: 100vh;
+  width: 190rem;
+}
+
+.labelInputField,
+.titleInputField {
+  background: var(--bg-color);
+  border-radius: 0.8rem;
+  border: solid 1px var(--main-color);
+  box-shadow: black 0px 0px .5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.titleInputField {
+  width: 100%;
+}
+
+.label {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  text-align: right;
+  padding: 1rem;
+  max-width: fit-content;
+  min-width: 15rem;
+  background: var(--second-bg-color);
+  min-height: 38px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.row2 {
+  display: flex;
+  gap: 1rem;
+}
+
+.input {
+  padding: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Containing Title, Title Styles, Attributes, Levels, Pendulum */
+.section {
+  display: flex;
+  gap: 1rem;
+}
+.section2 {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Shortened Label */
+.short {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  text-align: right;
+  padding: 1rem;
+  width: 100%;
+  background: var(--second-bg-color);
+}
+
+/* Pendulum Checkbox */
+.checkbox {
+  accent-color: #1a8d5d;
+  width: 24px;
+  height: 24px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+/* Pendulum Scale */
+.label img {
+  width: 2rem;
+}
+
+/* TEMPLATE SELCTION */
+.templates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  background: var(--bg-color);
+  border-radius: .8rem;
+  border: solid 1px var(--main-color);
+  box-shadow: black 0px 0px .5rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+}
+
+.templates .label {
+  justify-content: center;
+  min-width: 20rem;
+  border-radius: 0 0 .8rem .8rem;
+  border-left: solid 1px var(--main-color);
+  border-right: solid 1px var(--main-color);
+  border-bottom: solid 1px var(--main-color);
+}
+
+.templates .templateRow1,
+.templates .templateRow2 {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  width: 100%;
+}
+
+.templates .templateRow1 button,
+.templates .templateRow2 button,
+.templates .dropdown-menu button {
+  color: var(--text-color);
+  font-weight: bold;
+  padding: 1rem;
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+  border-radius: .8rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.templates .templateRow1 button {
+  width: 100px;
+}
+
+.templates .templateRow2 button {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.Normal {
+  background-image: url(/assets/buttons/NormalButton.png);
+}
+
+.Effect {
+  background-image: url(/assets/buttons/EffectButton.png);
+}
+
+.Ritual {
+  background-image: url(/assets/buttons/RitualButton.png);
+}
+
+.Fusion {
+  background-image: url(/assets/buttons/FusionButton.png);
+}
+
+.Synchro {
+  background-image: url(/assets/buttons/SynchroButton.png);
+}
+
+.Xyz {
+  background-image: url(/assets/buttons/XyzButton.png);
+}
+
+.Link {
+  background-image: url(/assets/buttons/LinkButton.png);
+}
+
+.Spell {
+  background-image: url(/assets/buttons/SpellButton.png);
+}
+
+.Trap {
+  background-image: url(/assets/buttons/TrapButton.png);
+}
+
+.Token {
+  background-image: url(/assets/buttons/TokenButton.png);
+}
+
+.dropdown-toggle {
+  background-color: var(--second-bg-color);
+}
+
+.templates .templateRow1 .Synchro {
+  color: black;
+}
+
+.templates .dropdown-options {
+  background: var(--bg-color);
+  border-radius: .8rem;
+  border: solid 1px var(--main-color);
+  display: flex;
+  gap: .5rem;
+  flex-direction: column;
+  position: absolute;
+  z-index: 1;
+  padding: 1rem;
+  box-shadow: black 0px 0px .5rem;
+}
+
+.Skill {
+  background-image: url(/assets/buttons/SkillButton.png);
+}
+
+.DarkSynchro {
+  background-image: url(/assets/buttons/DarkSynchroButton.png);
+}
+
+.Slifer {
+  background-image: url(/assets/buttons/SliferButton.png);
+}
+
+.Obelisk {
+  background-image: url(/assets/buttons/ObeliskButton.png);
+}
+
+.Ra {
+  background-image: url(/assets/buttons/RaButton.png);
+}
+
+.LegendaryDragon {
+  background-image: url(/assets/buttons/LDragonButton.png);
+}
+
+/* ATTRIBUTE SELECTION */
+.attributeRow {
+  gap: 1rem;
+  display: flex;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.attributeRow button {
+  padding: 15px;
+  background-size: 30px;
+  background-position: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.Dark {
+  background-image: url(/assets/buttons/DarkButton.png);
+}
+
+.Light {
+  background-image: url(/assets/buttons/LightButton.png);
+}
+
+.Earth {
+  background-image: url(/assets/buttons/EarthButton.png);
+}
+
+.Wind {
+  background-image: url(/assets/buttons/WindButton.png);
+}
+
+.Fire {
+  background-image: url(/assets/buttons/FireButton.png);
+}
+
+.Water {
+  background-image: url(/assets/buttons/WaterButton.png);
+}
+
+.Divine {
+  background-image: url(/assets/buttons/DivineButton.png);
+}
+
+/* LEVEL, RANK, and NLEVEL SELECTION */
+.levelRow {
+  display: flex;
+  gap: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.levelRow button {
+  color: var(--text-color);
+  background: transparent;
+  padding: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 25px;
+}
+
+.levelRow button.level-active,
+.levelRow button.rank-active,
+.levelRow button.nlevel-active {
+  background-size: 25px;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: transparent;
+}
+
+.levelRow button.level-active {
+  background-image: url(/assets/Level.png);
+}
+
+.levelRow button.rank-active {
+  background-image: url(/assets/Rank.png);
+}
+
+.levelRow button.nlevel-active {
+  background-image: url(/assets/Nlevel.png);
+}
+
+/* MONSTER TYPE SELECTION */
+.monsterTypes {
+  display: flex;
+  gap: 1rem;
+}
+
+.monsterTypes .label {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--second-bg-color);
+  border-radius: .8rem .8rem 0 0;
+  border-top: solid 1px var(--main-color);
+  border-left: solid 1px var(--main-color);
+  border-right: solid 1px var(--main-color);
+  padding: 1rem;
+  width: 100%;
+}
+
+.monsterTypes .icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.7rem;
+  color: var(--main-color);
+  margin-left: 1rem;
+}
+
+.monsterTypes .icon:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.monsterTypes .input,
+.monsterTypes .inputExtra {
+  padding: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: solid 1px var(--main-color);
+  width: 100%;
+}
+
+.monsterTypes .input {
+  border-radius: 0 0 0 .8rem;
+}
+
+.monsterTypes .inputExtra {
+  border-radius: 0 0 .8rem .8rem;
+}
+
+.monsterTypes .dropdown {
+  display: flex;
+  position: relative;
+  width: 100%;
+  background-color: var(--second-bg-color);
+  justify-content: center;
+}
+
+.monsterTypes .dropdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: .5rem;
+  padding-left: 1rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-color);
+  border: solid 1px var(--main-color);
+  border-radius: .8rem;
+  list-style: none;
+  z-index: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.monsterTypes .dropdownList li {
+  cursor: pointer;
+}
+
+.monsterTypes .dropdown-toggle {
+  background-color: var(--second-bg-color);
+  border-radius: 0 0 .8rem 0rem;
+  border-bottom: solid 1px var(--main-color);
+  border-top: solid 1px var(--main-color);
+  border-right: solid 1px var(--main-color);
+  padding: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* MONSTER EFFECT INPUTS */
+.effectInputs {
+  flex-grow: 1;
+  flex-basis: 0;
+  background-color: var(--bg-color);
+  border-radius: .8rem;
+  border: solid 1px var(--main-color);
+  box-shadow: black 0px 0px .5rem;
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.effectInputs .group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  max-height: 18rem;
+}
+
+.effectInputs .label {
+  text-align: center;
+  border-radius: 0 0 .8rem .8rem;
+  border-left: solid 1px var(--main-color);
+  border-right: solid 1px var(--main-color);
+  border-bottom: solid 1px var(--main-color);
+  background-color: var(--second-bg-color);
+  padding: 1rem;
+  width: fit-content;
+}
+
+.effectInputs .textarea {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  background: var(--second-bg-color);
+  border-radius: .8rem;
+  border: solid 1px var(--main-color);
+  padding: .5rem;
+  width: 100%;
+}
+
+/* GENERATE CARD */
+.generateCard {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.generateCard button{
+  background: var(--bg-color);
+  border-radius: 0.8rem;
+  border: solid 1px var(--main-color);
+  box-shadow: black 0px 0px .5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: fit-content;
+  padding: 1rem;
+  font-size: 2rem;
+  color: var(--text-color);
+}

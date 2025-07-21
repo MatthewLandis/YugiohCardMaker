@@ -1,0 +1,363 @@
+<app-background-animation></app-background-animation>
+<div class="cardMaker-content">
+  <div class="cardPreview">
+    <div class="card">
+      <div class="print" id="card-print-area" #cardPrintArea>
+        <div class="CardDisplay">
+          <div class="imageContainer" *ngIf="!pendulumTemplate">
+            <img *ngIf="!imageUrl" src="assets/placeholderArt.webp" />
+            <img *ngIf="imageUrl" [src]="imageUrl" />
+          </div>
+        </div>
+        <div class="CardDisplay">
+          <img src="assets/CardTemplates/{{template}}Template.png" />
+        </div>
+        <div class="CardDisplay">
+          <div class="pendulumContainer" *ngIf="pendulumTemplate">
+            <img *ngIf="!imageUrl" src="assets/placeholderArt.webp" />
+            <img *ngIf="imageUrl" [src]="imageUrl" />
+          </div>
+        </div>
+        <div class="CardDisplay">
+          <div class="TitleTextbox">
+            <p class="CardTitle" [ngClass]="titleStyle" [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">
+              {{ title }}
+            </p>
+          </div>
+          <div *ngIf="pendulumTemplate">
+            <img src="assets/CardTemplates/PendulumTemplates/PendulumShade/Pendulum{{template}}.png" />
+            <img src="assets/CardTemplates/PendulumTemplates/PendulumTemplate.png" />
+            <p class="PendulumScale" style="left: -29px;">{{pendulumScale}}</p>
+            <p class="PendulumScale" style="left: 288px;">{{pendulumScale}}</p>
+          </div>
+          <div *ngIf="template === 'Link'">
+            <img *ngIf="linkArrows.topLeft" src="assets/linkArrows/TopLeftArrow.png" />
+            <img *ngIf="linkArrows.top" src="assets/linkArrows/TopArrow.png" />
+            <img *ngIf="linkArrows.topRight" src="assets/linkArrows/TopRightArrow.png" />
+            <img *ngIf="linkArrows.left" src="assets/linkArrows/LeftArrow.png" />
+            <img *ngIf="linkArrows.right" src="assets/linkArrows/RightArrow.png" />
+            <img *ngIf="linkArrows.bottomLeft" src="assets/linkArrows/BottomLeftArrow.png" />
+            <img *ngIf="linkArrows.bottom" src="assets/linkArrows/BottomArrow.png" />
+            <img *ngIf="linkArrows.bottomRight" src="assets/linkArrows/BottomRightArrow.png" />
+          </div>
+          <div *ngIf="!['Spell', 'Trap', 'Skill','Legendary Dragon'].includes(template)">
+            <img *ngIf="!['Spell', 'Trap', 'Skill','Legendary Dragon'].includes(template)"
+              src="assets/attributes/{{attribute}}.png" />
+            <img *ngIf="levelType === 'Level'" src="assets/levels/level{{level}}.png" />
+            <img *ngIf="levelType === 'Negative Level'" src="assets/negativeLevels/nLevel{{level}}.png" />
+            <img *ngIf="levelType === 'Rank'" src="assets/ranks/rank{{level}}.png" />
+          </div>
+          <div *ngIf="!['Spell', 'Trap'].includes(template)">
+            <p class="monsterType" [style.transform]="'scaleX(' + scaleMonsterType + ')'">
+              <span class="bracket">[</span>
+              <span class="content">
+                <span>{{ getFormattedPrimaryMonsterTypes() }}</span>
+                <span *ngIf="coreMonsterType">
+                  <span class="slash">/</span>
+                  <span>{{ coreMonsterType }}</span>
+                </span>
+                <span *ngIf="pendulumTemplate">
+                  <span class="slash">/</span>
+                  <span>Pendulum</span>
+                </span>
+                <span *ngIf="abilityMonsterType">
+                  <span class="slash">/</span>
+                  <span>{{ abilityMonsterType }}</span>
+                </span>
+                <span *ngIf="lastMonsterType">
+                  <span class="slash">/</span>
+                  <span>{{ lastMonsterType }}</span>
+                </span>
+              </span>
+              <span class="bracket">]</span>
+            </p>
+          </div>
+          <div *ngIf="pendulumTemplate" class="PendulumEffectTextbox">
+            <p class="PendulumText" [style.transform]="'scaleX(' + scalePendulumEffect + ')'">
+              {{ pendulumEffectText }}
+            </p>
+          </div>
+          <div *ngIf="!['Spell', 'Trap'].includes(template)">
+            <div class="CardEffectTextbox" #monsterEffectTextContainer>
+              <p class="loreText" [style.transform]="'scale(' + scaleEffect + ')'" #monsterEffectTextElement
+                [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic', 'font-size': currentEffectFontSize} : {'font-family': 'MatrixBook', 'font-size': currentEffectFontSize }">
+                {{ effectText }}
+              </p>
+            </div>
+            <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
+              <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
+              <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
+            </div>
+            <p class="LinkRating" *ngIf="template === 'Link'">{{ linkRating }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <aside class="cardMaker">
+    <!-- TEMPLATE SELECTION -->
+    <div class="templates">
+      <label class="label">Templates</label>
+      <div class="templateRow1">
+        <button *ngFor="let template of templateTypesRow1" [class]="template" (click)="templateUpdate(template)">{{ template }}</button>
+      </div>
+      <div class="templateRow2">
+        <button *ngFor="let template of templateTypesRow2" [class]="template" (click)="templateUpdate(template)">{{ template }}</button>
+        <button #templateDropdownToggle class="dropdown-toggle " (click)="toggleTemplateDropdown()">Other
+          <i class='bx bx-chevron-down'></i>
+          <ul #templateDropdownList class="dropdown-options" *ngIf="showTemplateDropdown">
+            <button *ngFor="let template of dropdownButtonTypes" [class]="template.replace(' ', '')"
+              (click)="templateUpdate(template); toggleTemplateDropdown();">
+              {{ template }}
+            </button>
+          </ul>
+        </button>
+      </div>
+    </div>
+    <!-- TITLE INPUT -->
+    <div class="section">
+      <div class="section2">
+        <div class="titleInputField">
+          <label class="label">Title</label>
+          <input class="input" type="text" [(ngModel)]="title" (input)="autoTitleTextAdjustment()" />
+        </div>
+        <!-- ATTTRIBUTE SELECTION -->
+        <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)" class="labelInputField">
+          <label class="label">Attribute</label>
+          <div class="attributeRow">
+            <button *ngFor="let attribute of attributeTypes" [class]="attribute" (click)="updateAttribute(attribute)">
+            </button>
+          </div>
+        </div>
+        <!-- LEVEL SELECTION -->
+        <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon', 'Link'].includes(template)" class="labelInputField">
+          <label class="label">{{levelType}}</label>
+          <div class="levelRow">
+            <button *ngFor="let lvl of [1,2,3,4,5,6,7,8,9,10,11,12,13]" (click)="updateLevelValue(lvl)" [ngClass]="{
+              'level-active': levelType === 'Level' && shouldApplyBackground(lvl),
+              'rank-active': levelType === 'Rank' && shouldApplyBackground(lvl),
+              'nlevel-active': levelType === 'Negative Level' && shouldApplyBackground(lvl) }">
+              {{lvl}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- TITLE STYLES SELECTION -->
+      <div class="section2">
+        <div class="labelInputField">
+          <label class="label">Title Styles</label>
+          <select class="input" [(ngModel)]="titleStyle">
+            <option *ngFor="let TitleStyle of titleStyles">{{ TitleStyle }}</option>
+          </select>
+        </div>
+        <!-- PENDULUM CHECKBOX -->
+        <div *ngIf="['Normal', 'Effect', 'Ritual', 'Fusion', 'Synchro', 'Xyz'].includes(template)"
+          class="labelInputField">
+          <label class="label">Pendulum Template</label>
+          <input class="checkbox" type="checkbox" [(ngModel)]="pendulumTemplate"
+            (change)="autoMonsterTypeAdjustment()" />
+        </div>
+        <!-- PENDULUM SCALE SELECTION -->
+        <div *ngIf="pendulumTemplate">
+          <div class="labelInputField" style="width: 100%;">
+            <label class="label">
+              <img src="assets/leftScale.png">
+              Pendulum Scale
+              <img src="assets/rightScale.png">
+            </label>
+            <select class="input" [(ngModel)]="pendulumScale">
+              <option *ngFor="let value of [1,2,3,4,5,6,7,8,9,10,11,12,13]">{{value}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MONSTER TYPE SELECTION -->
+    <div *ngIf="!['Spell', 'Trap', 'Skill'].includes(template)">
+      <div class="monsterTypes">
+        <!-- PRIMARY MONSTER TYPE -->
+        <div>
+          <label class="label">Monster Type
+            <div class="icon" (click)="addPrimaryMonsterTypeSlot()">
+              <i class='bx bx-plus'></i>
+            </div>
+          </label>
+          <div class="dropdown">
+            <input class="input" type="text" size="10" [(ngModel)]="primaryMonsterTypeSlots[0].selectedValue"
+              (input)="onPrimaryTypeInput(primaryMonsterTypeSlots[0])">
+            <button #primaryMonsterTypeDropdownToggle class="dropdown-toggle" (click)="toggleMonsterTypeDropdown()">
+              <i class='bx bx-chevron-down'></i>
+            </button>
+            <ul #primaryMonsterTypeDropdownList class="dropdownList" *ngIf="showMonsterTypeDropdown">
+              <li *ngFor="let value of primaryMonsterTypes"
+                (click)="selectMonsterTypeFromDropdown(primaryMonsterTypeSlots[0], value)">
+                {{ value }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- EXTRA TYPE -->
+        <div *ngFor="let slot of primaryMonsterTypeSlots.slice(1); let i = index; trackBy: trackById">
+          <div>
+            <label class="label">Extra Type {{ i + 2 }}
+              <div class="icon" (click)="removePrimaryMonsterTypeSlot(slot.id)">
+                <i class='bx bx-minus'></i>
+              </div>
+            </label>
+            <div class="dropdown">
+              <input class="inputExtra" type="text" size="10" [(ngModel)]="slot.selectedValue"
+                (input)="onPrimaryTypeInput(slot)">
+            </div>
+          </div>
+        </div>
+        <!-- ABILITY TYPE -->
+        <div>
+          <label class="label">Ability Type</label>
+          <div class="dropdown">
+            <input class="input" type="text" size="5" [(ngModel)]="abilityMonsterType" (input)="onAbilityInput()">
+            <button #abilityDropdownToggle class="dropdown-toggle" (click)="toggleAbilityDropdown()">
+              <i class='bx bx-chevron-down'></i>
+            </button>
+            <ul #abilityDropdownList class="dropdownList" *ngIf="showAbilityDropdown">
+              <li *ngFor="let value of abilityMonsterTypes"
+                (click)="selectAbilityFromDropdown(value); toggleAbilityDropdown()">
+                {{ value }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MONSTER EFFECT INPUT -->
+    <div class="row">
+      <div *ngIf="!['Spell', 'Trap', 'Skill'].includes(template)" class="effectInputs">
+        <div *ngIf="!['Spell', 'Trap'].includes(template)" class="group">
+          <p class="label">Monster {{effectTypes}} Text</p>
+          <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
+            [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}" (input)="adjustEffectText()">
+      </textarea>
+        </div>
+      </div>
+      <!-- LINK ARROW INPUT -->
+      <div *ngIf="template === 'Link'" class="effectInputs">
+        <div class="textarea-group">
+          <p class="textareaLabel">Link Arrows</p>
+          <div class="textareaField">
+            <div class="linkArrowsGrid">
+
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.topLeft"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.top"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.topRight"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.left"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell center">
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.right"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottomLeft"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottom"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+              <div class="cell">
+                <label>
+                  <input type="checkbox" [style.accentColor]="'red'" [(ngModel)]="linkArrows.bottomRight"
+                    (change)="updateLinkRating()" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PENDULUM EFFECT INPUT -->
+      <div *ngIf="pendulumTemplate" class="effectInputs">
+        <div class="group">
+          <p class="label">Pendulum Effect Text</p>
+          <textarea class="textarea" [(ngModel)]="pendulumEffectText" rows="8" cols="40"
+            (input)="adjustPendulumEffectText()">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <!-- ATTACK INPUT -->
+    <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)">
+      <div class="row">
+        <div class="row2">
+          <div class="labelInputField">
+            <label class="short">Attack</label>
+            <input class="input" type="text" size="1" [(ngModel)]="attack" />
+          </div>
+          <!-- DEFENSE INPUT -->
+          <div *ngIf="template != 'Link'" class="labelInputField">
+            <label class="short">Defense</label>
+            <input class="input" type="text" size="1" [(ngModel)]="defense" />
+          </div>
+        </div>
+        <!-- CARD ART INPUT -->
+        <div class="row2">
+          <div class="labelInputField">
+            <label class="short">Card Art</label>
+            <input type="file" id="file-upload" (change)="onImageSelected($event)" style="margin-left: 1rem;" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- GENERATE CARD IMAGE -->
+     <div class="generateCard">
+        <button (click)="generateCardPng()">Generate Card Image</button>
+    </div>
+  </aside>
+</div>

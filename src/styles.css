@@ -14,8 +14,7 @@
   --text-color: #ededed;
   --main-color: #2196f3;
 
-    --second-bg-color-rgb: 22, 50, 92; /* RGB for #16325c */
-
+  --second-bg-color-rgb: 22, 50, 92;
 }
 
 html {
