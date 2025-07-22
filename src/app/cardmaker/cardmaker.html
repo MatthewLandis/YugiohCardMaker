@@ -20,9 +20,8 @@
         </div>
         <div class="CardDisplay">
           <div class="TitleTextbox">
-            <p class="CardTitle" [ngClass]="titleStyle" [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">
-              {{ title }}
-            </p>
+            <p class="CardTitle" [ngClass]="titleStyle" 
+            [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">{{ title }}</p>
           </div>
           <div *ngIf="pendulumTemplate">
             <img src="assets/CardTemplates/PendulumTemplates/PendulumShade/Pendulum{{template}}.png" />
@@ -77,13 +76,14 @@
               {{ pendulumEffectText }}
             </p>
           </div>
+          <!-- MONSTER EFFECT TEXT -->
           <div *ngIf="!['Spell', 'Trap'].includes(template)">
             <div class="CardEffectTextbox" #monsterEffectTextContainer>
-              <p class="loreText" [style.transform]="'scale(' + scaleEffect + ')'" #monsterEffectTextElement
-                [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic', 'font-size': currentEffectFontSize} : {'font-family': 'MatrixBook', 'font-size': currentEffectFontSize }">
-                {{ effectText }}
-              </p>
+              <p class="loreText" [style.transform]="'scaleX(' + scaleEffect + ')'" #monsterEffectTextElement
+                [ngStyle]="effectTypes === 'Lore' ? 
+                { 'font-style': 'italic' } : {'font-family': 'MatrixBook' }">{{ effectText }}</p>
             </div>
+            <!-- ATTACK, DEFENSE, LINK RATING -->
             <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
               <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
               <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
@@ -95,37 +95,17 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <aside class="cardMaker">
     <!-- TEMPLATE SELECTION -->
     <div class="templates">
       <label class="label">Templates</label>
       <div class="templateRow1">
-        <button *ngFor="let template of templateTypesRow1" [class]="template" (click)="templateUpdate(template)">{{ template }}</button>
+        <button *ngFor="let template of templateTypesRow1" [class]="template" (click)="templateUpdate(template)">{{
+          template }}</button>
       </div>
       <div class="templateRow2">
-        <button *ngFor="let template of templateTypesRow2" [class]="template" (click)="templateUpdate(template)">{{ template }}</button>
+        <button *ngFor="let template of templateTypesRow2" [class]="template" (click)="templateUpdate(template)">{{
+          template }}</button>
         <button #templateDropdownToggle class="dropdown-toggle " (click)="toggleTemplateDropdown()">Other
           <i class='bx bx-chevron-down'></i>
           <ul #templateDropdownList class="dropdown-options" *ngIf="showTemplateDropdown">
@@ -195,6 +175,7 @@
         </div>
       </div>
     </div>
+
     <!-- MONSTER TYPE SELECTION -->
     <div *ngIf="!['Spell', 'Trap', 'Skill'].includes(template)">
       <div class="monsterTypes">
@@ -258,7 +239,7 @@
           <p class="label">Monster {{effectTypes}} Text</p>
           <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
             [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}" (input)="adjustEffectText()">
-      </textarea>
+          </textarea>
         </div>
       </div>
       <!-- LINK ARROW INPUT -->
@@ -356,8 +337,8 @@
       </div>
     </div>
     <!-- GENERATE CARD IMAGE -->
-     <div class="generateCard">
-        <button (click)="generateCardPng()">Generate Card Image</button>
+    <div class="generateCard">
+      <button (click)="generateCardPng()">Generate Card Image</button>
     </div>
   </aside>
 </div>

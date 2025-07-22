@@ -90,22 +90,38 @@
 .SecretRare {
   background-image: linear-gradient(#fff211 35%, #fffff8 40%, #fff211 48%, #bd920f 53%, #f7ce1e 70%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: grayscale(100%) drop-shadow(-1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 -1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px rgba(0, 0, 0, 0.3)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+  filter: grayscale(100%) 
+  drop-shadow(-1px 0 rgba(0, 0, 0, 0.4)) 
+  drop-shadow(1px 0 rgba(0, 0, 0, 0.4)) 
+  drop-shadow(0 -1px rgba(0, 0, 0, 0.4)) 
+  drop-shadow(0 1px rgba(0, 0, 0, 0.3)) 
+  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
 }
 
 .UltraRare {
   background-image: linear-gradient(#fff211 35%, #fffff8 40%, #fff211 48%, #bd920f 53%, #f7ce1e 70%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) 
+  drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) 
+  drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) 
+  drop-shadow(0 1px rgba(0, 0, 0, 0.2)) 
+  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
 }
 
 .Barian {
   background-image: linear-gradient(#ff3b6a 35%, #ffb6d5 40%, #ff3b6a 48%, #b8004c 53%, #ff5eae 70%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) 
+  drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) 
+  drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) 
+  drop-shadow(0 1px rgba(0, 0, 0, 0.2)) 
+  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
 }
 
 .skillFont {
@@ -140,9 +156,6 @@
   align-items: center;
 }
 
-.linkArrowsGrid .cell.center {}
-
-
 .monsterType {
   position: absolute;
   top: 432px;
@@ -167,29 +180,25 @@
 .monsterType .slash {
   margin: 1px;
 }
-
+/*********************************************************************************************************************/
 .CardEffectTextbox {
   position: absolute;
   top: 453px;
   left: 32px;
   width: 336px;
   height: 76px;
-  transform-origin: left center;
-  overflow: hidden;
-  /* Recommended to prevent vertical overflow if height is fixed */
-
 }
 
 .loreText {
+  transform-origin: left center;
   text-align: justify;
-  transform-origin: left;
   line-height: 1;
   font-size: 14px;
   font-family: 'MatrixBook';
   white-space: pre-wrap;
   transition: transform 0.1s ease-out, font-size 0.1s ease-out;
 }
-
+/*********************************************************************************************************************/
 .SpellTrapTextbox {
   position: absolute;
   top: 866px;

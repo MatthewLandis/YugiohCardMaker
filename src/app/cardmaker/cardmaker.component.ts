@@ -76,34 +76,27 @@ export class CardMakerComponent implements OnInit, OnDestroy {
   showAbilityDropdown: boolean = false;
 
   @ViewChild('cardPrintArea') cardPrintArea!: ElementRef;
-
   @ViewChild('templateDropdownList') templateDropdownList!: ElementRef;
   @ViewChild('templateDropdownToggle') templateDropdownToggle!: ElementRef;
-
   @ViewChild('primaryMonsterTypeDropdownList') primaryMonsterTypeDropdownList!: ElementRef;
   @ViewChild('primaryMonsterTypeDropdownToggle') primaryMonsterTypeDropdownToggle!: ElementRef;
-
   @ViewChild('abilityDropdownList') abilityDropdownList!: ElementRef;
   @ViewChild('abilityDropdownToggle') abilityDropdownToggle!: ElementRef;
-
-  // NEW ViewChild references for text adjustment
-  @ViewChild('monsterEffectTextContainer') monsterEffectTextContainer!: ElementRef;
-  @ViewChild('monsterEffectTextElement') monsterEffectTextElement!: ElementRef;
-
+  @ViewChild('monsterEffectTextContainer') monsterEffectTextContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('monsterEffectTextElement') monsterEffectTextElement!: ElementRef<HTMLParagraphElement>;
+  
   private context!: CanvasRenderingContext2D;
 
-  // --- Dynamic Text Scaling Properties ---
   scaleTitle = 1;
   scaleMonsterType = 1;
-  // This will now handle the uniform scaling for the effect text
   scaleEffect = 1;
   scalePendulumEffect = 1;
   SpellscaleEffect = 1;
 
-  // Font size for the effect text (used as a fallback if scaling is too extreme)
-  currentEffectFontSize: string = '14px';
+  effectTextTransformScaleX: number = 1;
+ currentEffectFontSize: number = 14;
   private readonly defaultEffectFontSize: number = 14;
-  private readonly minEffectFontSize: number = 8; // Adjust this minimum as needed
+  private readonly minEffectFontSize: number = 8;
 
   constructor() {
     const offscreenCanvas = document.createElement('canvas');
@@ -114,7 +107,7 @@ export class CardMakerComponent implements OnInit, OnDestroy {
     this.updateLevelType();
     this.addPrimaryMonsterTypeSlot('Cyberse');
     this.autoMonsterTypeAdjustment();
-    this.adjustEffectText(); // Call on init for initial text
+    this.adjustEffectText();
   }
 
   @HostListener('document:click', ['$event'])
@@ -143,8 +136,7 @@ export class CardMakerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    // Any other cleanup if necessary
+  ngOnDestroy() {
   }
 
   capitalizeFirstLetter(value: string): string {
@@ -371,104 +363,13 @@ export class CardMakerComponent implements OnInit, OnDestroy {
       .join('/');
   }
 
-  // MODIFIED: adjustEffectText to continuously shrink
   adjustEffectText() {
-    if (!this.monsterEffectTextElement || !this.monsterEffectTextContainer) {
-      return;
-    }
-
-    const textElement = this.monsterEffectTextElement.nativeElement;
-    const containerElement = this.monsterEffectTextContainer.nativeElement;
-
-    // Reset to default for initial measurement
-    this.currentEffectFontSize = `${this.defaultEffectFontSize}px`;
-    this.scaleEffect = 1;
-
-    // Use a function to repeatedly check and adjust
-    const checkAndAdjust = () => {
-      // Apply current styles to the element before measuring
-      textElement.style.fontSize = this.currentEffectFontSize;
-      textElement.style.transform = `scale(${this.scaleEffect})`;
-
-      // Schedule next check after the browser has rendered the current styles
-      requestAnimationFrame(() => {
-        const currentTextWidth = textElement.scrollWidth;
-        const currentTextHeight = textElement.scrollHeight;
-        const containerWidth = containerElement.clientWidth;
-        const containerHeight = containerElement.clientHeight;
-
-        let changed = false;
-
-        // Prioritize horizontal fit
-        if (currentTextWidth > containerWidth + 1) { // Add a small buffer
-          // If still too wide, reduce scale
-          this.scaleEffect = Math.max(0.01, this.scaleEffect * (containerWidth / currentTextWidth) - 0.01); // Shrink slightly more than exactly needed
-          changed = true;
-        } else if (currentTextHeight > containerHeight + 1) { // If vertical overflow, reduce font size slightly
-          const currentFontSizeNum = parseFloat(this.currentEffectFontSize);
-          if (currentFontSizeNum > this.minEffectFontSize) {
-              this.currentEffectFontSize = `${Math.max(this.minEffectFontSize, currentFontSizeNum - 1)}px`; // Decrease by 1px
-              changed = true;
-          } else {
-              // If font size is at min and still overflows vertically, try to scale down (uniform scale)
-              // This handles cases where lines are too many even at min font size
-              this.scaleEffect = Math.max(0.01, this.scaleEffect * (containerHeight / currentTextHeight) - 0.01);
-              changed = true;
-          }
-        } else if (this.scaleEffect < 1 || parseFloat(this.currentEffectFontSize) < this.defaultEffectFontSize) {
-          // If it fits and is scaled/smaller than default, try to revert
-          const currentFontSizeNum = parseFloat(this.currentEffectFontSize);
-          let reverted = false;
-
-          if (currentFontSizeNum < this.defaultEffectFontSize) {
-            // Try to increase font size
-            const nextFontSize = Math.min(this.defaultEffectFontSize, currentFontSizeNum + 1);
-            textElement.style.fontSize = `${nextFontSize}px`; // Temporarily apply for measurement
-            requestAnimationFrame(() => {
-              if (textElement.scrollWidth <= containerWidth && textElement.scrollHeight <= containerHeight) {
-                this.currentEffectFontSize = `${nextFontSize}px`;
-                reverted = true;
-                changed = true; // Mark as changed to re-evaluate
-                checkAndAdjust(); // Recurse to see if more can be reverted
-              } else {
-                // Cannot increase font size without overflowing, so revert and keep current setting
-                textElement.style.fontSize = this.currentEffectFontSize;
-              }
-            });
-          }
-
-          if (!reverted && this.scaleEffect < 1) {
-            // Try to increase scale if font size is maxed or not overflowed
-            const nextScale = Math.min(1, this.scaleEffect + 0.01); // Increase scale slightly
-            textElement.style.transform = `scale(${nextScale})`; // Temporarily apply for measurement
-            requestAnimationFrame(() => {
-                if (textElement.scrollWidth <= containerWidth && textElement.scrollHeight <= containerHeight) {
-                    this.scaleEffect = nextScale;
-                    changed = true; // Mark as changed to re-evaluate
-                    checkAndAdjust(); // Recurse to see if more can be reverted
-                } else {
-                    textElement.style.transform = `scale(${this.scaleEffect})`; // Revert if causes overflow
-                }
-            });
-          }
-        }
-
-        if (changed) {
-          checkAndAdjust(); // Continue adjusting if a change was made
-        }
-      });
-    };
-
-    checkAndAdjust(); // Start the adjustment process
   }
 
-
   adjustPendulumEffectText() {
-    // Implement similar continuous shrinking logic for pendulum text
   }
 
   adjustSpellEffectText() {
-    // Implement similar continuous shrinking logic for spell text
   }
 
   async generateCardPng(): Promise<void> {
