@@ -83,6 +83,8 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
   @ViewChild('abilityDropdownList') abilityDropdownList!: ElementRef;
   @ViewChild('abilityDropdownToggle') abilityDropdownToggle!: ElementRef;
   @ViewChild('loreTextDisplay') loreTextContentElement!: ElementRef;
+  @ViewChild('pendulumEffectTextDisplay') pendulumEffectTextDisplayElement!: ElementRef;
+  @ViewChild('spellTrapEffectTextDisplay') spellTrapEffectTextDisplayElement!: ElementRef;
 
 
   private context!: CanvasRenderingContext2D;
@@ -93,26 +95,26 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
   private readonly baseFontSize = 14;
   private readonly baseLineHeightRatio = 0.9;
 
+  // New target height for 7 lines (approx. baseFontSize * baseLineHeightRatio * 7)
+  // You might need to fine-tune this value based on your actual line height.
+  private readonly fixedOuterHeightTier2 = 88;
+
   // Parameters for the iterative search
-  private readonly SCALE_PRECISION = 0.000001; // Extremely high precision
+  private readonly SCALE_PRECISION = 0.00001; // Extremely high precision
   private readonly MIN_SCALE_X = 0.5; // Minimum allowable squish
 
-  // NEW: Calculated maximum allowed height for 6 lines, adjusted slightly
-  // This value is what we *strictly* compare against.
-  // A line's height is baseFontSize * baseLineHeightRatio.
-  // 6 lines = 6 * 14 * 0.9 = 75.6px.
-  // We want to be absolutely sure it doesn't go to 7.
-  // Let's calculate the height of exactly 6 lines.
-   private readonly TARGET_6_LINE_HEIGHT = this.baseFontSize * this.baseLineHeightRatio * 6;
-   // And the height of 7 lines to know our absolute maximum threshold for overflow.
-   private readonly THRESHOLD_7_LINE_HEIGHT = this.baseFontSize * this.baseLineHeightRatio * 7;
-
+  private readonly CALCULATED_LINE_HEIGHT = this.baseFontSize * this.baseLineHeightRatio;
+  private readonly THEORETICAL_6_LINE_HEIGHT = this.CALCULATED_LINE_HEIGHT * 6;
+  // private readonly TARGET_CONTENT_HEIGHT = this.fixedOuterHeight - 0.5; // This can be removed, it's dynamic now
 
   scaleTitle = 1;
   scaleMonsterType = 1;
   scaleEffect = 1;
   scalePendulumEffect = 1;
   SpellscaleEffect = 1;
+
+  // New property to track the current font size being used for effect text
+  currentEffectFontSize: number = this.baseFontSize;
 
 
   constructor() {
@@ -123,8 +125,12 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
    ngAfterViewInit(): void {
-    // Perform an initial adjustment when the component loads
+    // Perform initial adjustments when the component loads
+    // Ensure initial font size is base when adjusting on init
+    this.currentEffectFontSize = this.baseFontSize;
     this.adjustLoreTextDisplay();
+    this.adjustPendulumEffectText();
+    this.adjustSpellEffectText();
   }
 
   ngOnInit(): void {
@@ -241,9 +247,13 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.pendulumUpdate();
     this.autoTitleTextAdjustment();
     this.autoMonsterTypeAdjustment();
-    this.adjustLoreTextDisplay();
-    this.adjustPendulumEffectText();
-    this.adjustSpellEffectText();
+    // Reset font size to base when template changes, then defer adjustments
+    this.currentEffectFontSize = this.baseFontSize;
+    setTimeout(() => {
+      this.adjustLoreTextDisplay();
+      this.adjustPendulumEffectText();
+      this.adjustSpellEffectText();
+    });
   }
 
   pendulumUpdate() {
@@ -386,6 +396,29 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
       .join('/');
   }
 
+  // Event handler for effectText changes - now resets font size and uses setTimeout
+  onEffectTextChange(): void {
+    this.currentEffectFontSize = this.baseFontSize; // Reset to default font size on every change
+    setTimeout(() => {
+      this.adjustLoreTextDisplay();
+    });
+  }
+
+  // Event handler for pendulumEffectText changes - now using setTimeout
+  onPendulumEffectTextChange(): void {
+    setTimeout(() => {
+      this.adjustPendulumEffectText();
+    });
+  }
+
+  // Event handler for spellTrapType (if it uses effectText) or a dedicated spell/trap text field - now using setTimeout
+  onSpellTrapEffectTextChange(): void {
+    setTimeout(() => {
+      this.adjustSpellEffectText();
+    });
+  }
+
+
   adjustLoreTextDisplay(): void {
     if (!this.loreTextContentElement || !this.loreTextContentElement.nativeElement) {
       console.warn('loreTextContentElement not found.');
@@ -393,100 +426,121 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit  {
     }
 
     const innerElement = this.loreTextContentElement.nativeElement as HTMLElement;
-
     const originalInnerOverflow = innerElement.style.overflow;
 
-    // --- Step 1: Reset inner element to base, unscaled state for accurate measurement ---
-    innerElement.style.transform = 'scaleX(1)';
-    innerElement.style.transformOrigin = 'left top'; // CRUCIAL: Set origin to top-left
-    innerElement.style.width = `${this.fixedOuterWidth}px`; // Constrain for height measurement
-    innerElement.style.fontSize = `${this.baseFontSize}px`;
-    innerElement.style.lineHeight = `${this.baseLineHeightRatio}`;
-    innerElement.style.whiteSpace = 'pre-wrap';
-    innerElement.style.overflow = 'visible'; // Allow measuring full scrollHeight
+    let targetFontSize = this.baseFontSize; // Start with default font size
+    let targetHeight = this.fixedOuterHeight; // Target height for 6 lines
 
-    // Measure initial height with no scaling and wrapping within fixed width
-    const initialContentHeight = innerElement.scrollHeight;
+    // --- First Pass: Try to fit with baseFontSize (14px) and scaleX ---
+    // Reset inner element to base, unscaled state for accurate measurement
+    innerElement.style.transform = 'scaleX(1)';
+    innerElement.style.transformOrigin = 'left top';
+    innerElement.style.width = `${this.fixedOuterWidth}px`;
+    innerElement.style.fontSize = `${this.baseFontSize}px`;
+    innerElement.style.lineHeight = `${this.baseLineHeightRatio}`;
+    innerElement.style.whiteSpace = 'pre-wrap';
+    innerElement.style.overflow = 'visible';
 
-    // --- Step 2: Check if scaling is needed ---
-    // If it already fits strictly within fixedOuterHeight, no scaling is needed.
-    if (initialContentHeight <= this.fixedOuterHeight) { // Strictly check against fixedOuterHeight
-      innerElement.style.transform = 'scaleX(1)';
-      innerElement.style.width = `${this.fixedOuterWidth}px`;
-      innerElement.style.overflow = originalInnerOverflow;
-      return;
-    }
+    let lowScale = this.MIN_SCALE_X;
+    let highScale = 1.0;
+    let currentBestScaleX = 1.0;
+    let currentBestLogicalWidth = this.fixedOuterWidth;
 
-    // --- Step 3: Content overflows vertically. Perform binary search to find the *largest* scaleX that fits ---
-    let lowScale = this.MIN_SCALE_X;
-    let highScale = 1.0;
-    let finalScaleX = 1.0; // This will hold the highest scaleX that *did* fit strictly
-    let finalLogicalWidth = this.fixedOuterWidth;
+    // Perform binary search for scaleX at baseFontSize
+    while (highScale - lowScale > this.SCALE_PRECISION) {
+        const testScaleX = (lowScale + highScale) / 2;
+        const testLogicalWidth = this.fixedOuterWidth / testScaleX;
 
-    // Use a while loop based on precision, ensuring it runs until desired accuracy
-    // This replaces MAX_ITERATIONS and ensures convergence.
-    while (highScale - lowScale > this.SCALE_PRECISION) {
-      const testScaleX = (lowScale + highScale) / 2;
-      const testLogicalWidth = this.fixedOuterWidth / testScaleX;
+        innerElement.style.transform = `scaleX(${testScaleX})`;
+        innerElement.style.width = `${testLogicalWidth}px`;
 
-      // Apply test values
-      innerElement.style.transform = `scaleX(${testScaleX})`;
-      innerElement.style.width = `${testLogicalWidth}px`;
+        const currentHeight = innerElement.scrollHeight;
 
-      const currentHeight = innerElement.scrollHeight;
+        if (currentHeight <= targetHeight) {
+            currentBestScaleX = testScaleX;
+            currentBestLogicalWidth = testLogicalWidth;
+            lowScale = testScaleX;
+        } else {
+            highScale = testScaleX;
+        }
+    }
 
-      // Check if it fits (current height is less than or equal to fixedOuterHeight)
-      // We also need to be absolutely sure it doesn't spill into a 7th line's territory.
-      // The fixedOuterHeight is for 6 lines (76px). If currentHeight is even 1px more, it's a 7th line.
-      if (currentHeight <= this.fixedOuterHeight) {
-        // It fits! This is a potential solution. Try to scale less (closer to 1.0)
-        finalScaleX = testScaleX; // Store this as the best *fitting* scale found so far
-        finalLogicalWidth = testLogicalWidth;
-        lowScale = testScaleX; // Continue searching in the upper half
-      } else {
-        // Still overflows. Need to scale *more* aggressively (closer to MIN_SCALE_X)
-        highScale = testScaleX; // Search in the lower half
-      }
-    }
+    // Apply the result of the first pass (with baseFontSize)
+    innerElement.style.transform = `scaleX(${currentBestScaleX})`;
+    innerElement.style.width = `${currentBestLogicalWidth}px`;
+    const measuredHeightAfterFirstPass = innerElement.scrollHeight;
 
-    // --- Step 4: Apply the final determined scaleX and logical width ---
-    // Use the final (best fitting) values from the loop.
-    // Add a final, very aggressive check: if even after the binary search,
-    // the scrollHeight is *just* over the fixedOuterHeight, nudge it down by SCALE_PRECISION.
-    // This handles the floating point/integer rounding issue of scrollHeight itself.
-    innerElement.style.transform = `scaleX(${finalScaleX})`;
-    innerElement.style.width = `${finalLogicalWidth}px`;
+    // --- Check if we need to switch to a smaller font size ---
+    // If after trying to scale at baseFontSize, we are at minScaleX AND still overflow,
+    // then switch to 13px font size.
+    if (measuredHeightAfterFirstPass > targetHeight &&
+        Math.abs(currentBestScaleX - this.MIN_SCALE_X) < this.SCALE_PRECISION) { // Check if we are effectively at MIN_SCALE_X
+        
+        console.log('Reached MIN_SCALE_X at base font size, switching to 13px.');
+        targetFontSize = 13;
+        targetHeight = this.fixedOuterHeightTier2; // New target height for 7 lines
 
-    if (innerElement.scrollHeight > this.fixedOuterHeight && finalScaleX > this.MIN_SCALE_X) {
-        // If it still overflows after the precise binary search,
-        // it means currentHeight might have been fixedOuterHeight + epsilon,
-        // which scrollHeight rounded up. So, we make one final, definitive nudge.
-        finalScaleX = Math.max(this.MIN_SCALE_X, finalScaleX - this.SCALE_PRECISION * 2); // Nudge down a bit more
-        finalLogicalWidth = this.fixedOuterWidth / finalScaleX;
-        innerElement.style.transform = `scaleX(${finalScaleX})`;
-        innerElement.style.width = `${finalLogicalWidth}px`;
-    }
+        // Reset and re-measure with the new font size
+        innerElement.style.transform = 'scaleX(1)'; // Reset transform
+        innerElement.style.width = `${this.fixedOuterWidth}px`; // Reset width for fresh measurement
+        innerElement.style.fontSize = `${targetFontSize}px`; // Apply new font size
+        
+        lowScale = this.MIN_SCALE_X; // Reset binary search range for the second pass
+        highScale = 1.0;
+        currentBestScaleX = 1.0; // Reset best scale
+        currentBestLogicalWidth = this.fixedOuterWidth;
 
+        // Perform binary search again for scaleX at 13px font size
+        while (highScale - lowScale > this.SCALE_PRECISION) {
+            const testScaleX = (lowScale + highScale) / 2;
+            const testLogicalWidth = this.fixedOuterWidth / testScaleX;
 
-    // --- Step 5: Apply the final determined scaleX and logical width ---
-    innerElement.style.transform = `scaleX(${finalScaleX})`;
-    innerElement.style.transformOrigin = 'left top'; // Crucial: maintain top alignment
-    innerElement.style.width = `${finalLogicalWidth}px`;
+            innerElement.style.transform = `scaleX(${testScaleX})`;
+            innerElement.style.width = `${testLogicalWidth}px`;
 
-    // --- Step 6: Restore original overflow ---
-    innerElement.style.overflow = originalInnerOverflow;
+            const currentHeight = innerElement.scrollHeight;
 
-    // Optional: Log final height to debug
-    console.log(`Final ScaleX: ${finalScaleX.toFixed(8)}, Final Logical Width: ${finalLogicalWidth.toFixed(4)}, Final Measured Height: ${innerElement.scrollHeight}`);
+            if (currentHeight <= targetHeight) {
+                currentBestScaleX = testScaleX;
+                currentBestLogicalWidth = testLogicalWidth;
+                lowScale = testScaleX;
+            } else {
+                highScale = testScaleX;
+            }
+        }
+    }
+
+    // --- Final Application of Styles ---
+    // Nudge down a bit more if still slightly over after the final binary search
+    innerElement.style.transform = `scaleX(${currentBestScaleX})`; // Apply current best
+    innerElement.style.width = `${this.fixedOuterWidth / currentBestScaleX}px`; // Recalculate based on current best
+    const finalMeasuredHeight = innerElement.scrollHeight;
+
+    if (finalMeasuredHeight > targetHeight && currentBestScaleX > this.MIN_SCALE_X) {
+        currentBestScaleX = Math.max(this.MIN_SCALE_X, currentBestScaleX - this.SCALE_PRECISION * 2);
+        currentBestLogicalWidth = this.fixedOuterWidth / currentBestScaleX;
+        console.log('Final nudge applied for minor overflow.');
+    }
+
+    innerElement.style.transform = `scaleX(${currentBestScaleX})`;
+    innerElement.style.transformOrigin = 'left top';
+    innerElement.style.width = `${currentBestLogicalWidth}px`;
+    innerElement.style.fontSize = `${targetFontSize}px`; // Apply the chosen font size (14 or 13)
+
+    this.scaleEffect = currentBestScaleX; // Update component property
+    this.currentEffectFontSize = targetFontSize; // Store the final font size used
+
+    innerElement.style.overflow = originalInnerOverflow; // Restore overflow
+
+    console.log(`Final Adjustment: ScaleX: ${this.scaleEffect.toFixed(8)}, Logical Width: ${currentBestLogicalWidth.toFixed(4)}, Measured Height: ${innerElement.scrollHeight}, Font Size: ${this.currentEffectFontSize}`);
   }
 
 
-  adjustPendulumEffectText() {
-    // Implement similar logic for pendulum effect text if needed
+  adjustPendulumEffectText(): void {
   }
 
-  adjustSpellEffectText() {
-    // Implement similar logic for spell/trap effect text if needed
+
+  adjustSpellEffectText(): void {
   }
 
   async generateCardPng(): Promise<void> {

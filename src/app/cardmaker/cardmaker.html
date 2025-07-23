@@ -222,7 +222,9 @@
           <p class="label">Monster {{effectTypes}} Text</p>
 <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
   [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
-  (input)="adjustLoreTextDisplay()">
+  (input)="onEffectTextChange()"
+    (paste)="onEffectTextChange()"
+>
 </textarea>
         </div>
       </div>
