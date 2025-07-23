@@ -181,7 +181,8 @@
   margin: 1px;
 }
 /*********************************************************************************************************************/
-.CardEffectTextbox {
+/* Outer container: Fixed dimensions, clips content */
+.loreText {
   position: absolute;
   top: 453px;
   left: 32px;
@@ -189,14 +190,23 @@
   height: 76px;
 }
 
-.loreText {
-  transform-origin: left center;
+/* Inner container: This is what actually holds the text and gets scaled */
+.loreTextContent {
+  /* Inherit/set text-related styles here */
   text-align: justify;
-  line-height: 1;
+  line-height: 0.9;
   font-size: 14px;
-  font-family: 'MatrixBook';
-  white-space: pre-wrap;
-  transition: transform 0.1s ease-out, font-size 0.1s ease-out;
+  font-family: 'MatrixBook'; /* Ensure this font is loaded */
+  white-space: pre-wrap; /* Preserve line breaks from textarea */
+
+  /* Initial state: no transform, width is 100% of parent */
+  transform: scaleX(1);
+  transform-origin: left center;
+  width: 100%; /* Initially fills the parent loreText */
+  height: 100%; /* Initially fills the parent loreText */
+
+  /* Ensure it doesn't add extra space like padding/border that breaks calculations */
+  box-sizing: border-box;
 }
 /*********************************************************************************************************************/
 .SpellTrapTextbox {
