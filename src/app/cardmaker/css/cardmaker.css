@@ -65,6 +65,7 @@
 
 /* Containing Title, Title Styles, Attributes, Levels, Pendulum */
 .section {
+  justify-content: space-between;
   display: flex;
   gap: 1rem;
 }
@@ -446,7 +447,7 @@
 }
 
 .effectInputs .label {
-  text-align: center;
+  justify-content: center;
   border-radius: 0 0 .8rem .8rem;
   border-left: solid 1px var(--main-color);
   border-right: solid 1px var(--main-color);
@@ -485,4 +486,22 @@
   padding: 1rem;
   font-size: 2rem;
   color: var(--text-color);
+  cursor: pointer;
+}
+
+.cell input {
+  scale: 2;
+}
+
+.cellCenter {
+  cursor: pointer;
+  scale:1.8;
+  background-color: var(--second-bg-color);
+   border-radius: 0.2rem;
+  border: solid 1px var(--main-color);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

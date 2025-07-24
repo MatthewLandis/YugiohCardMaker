@@ -27,3 +27,8 @@
   font-family: 'lore';
   src: url('../../../../public/assets/fonts/lore.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'effect';
+  src: url('../../../../public/assets/fonts/MatrixBook.ttf') format("truetype");
+}
