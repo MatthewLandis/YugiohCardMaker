@@ -77,9 +77,12 @@
             </p>
           </div>
           <div *ngIf="!['Spell', 'Trap'].includes(template)">
-<div class="loreText">
-  <div #loreTextDisplay class="loreTextContent">{{ effectText }}</div>
-</div>            <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
+            <div class="loreText">
+              <div #loreTextDisplay class="loreTextContent"
+                 [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
+>{{ effectText }}</div>
+            </div>            
+            <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
               <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
               <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
             </div>
@@ -220,11 +223,11 @@
       <div *ngIf="!['Spell', 'Trap', 'Skill'].includes(template)" class="effectInputs">
         <div *ngIf="!['Spell', 'Trap'].includes(template)" class="group">
           <p class="label">Monster {{effectTypes}} Text</p>
-<textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
-  [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
-  (input)="onEffectTextChange()"
-    (paste)="onEffectTextChange()">
-</textarea>
+            <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
+              [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
+              (input)="onEffectTextChange()"
+                (paste)="onEffectTextChange()">
+            </textarea>
         </div>
       </div>
       <div *ngIf="template === 'Link'" class="effectInputs">

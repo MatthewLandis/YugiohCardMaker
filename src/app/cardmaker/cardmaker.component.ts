@@ -399,8 +399,8 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly smallestFontSize = 12; // Font size for the alternative path
 
   // Parameters for the iterative search
-  private readonly SCALE_PRECISION = 0.00001; // Extremely high precision
-  private readonly MIN_SCALE_X = 0.5; // Minimum allowable squish for both 14px and 12px font
+  private readonly SCALE_PRECISION = 0.00001; // Extremely high precision - REQUIRED for binary search
+  private readonly MIN_SCALE_X = 0.01; // CHANGED: Allows for very aggressive horizontal squishing to prevent overflow
   private readonly SCALE_TRIGGER_THRESHOLD = 0.6; // Trigger 12px font if 14px font scaleX is less than this
   private readonly TRANSFORM_ORIGIN = 'left top'; // Consistent transform origin
 
@@ -409,7 +409,7 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * Adjusts the lore text display by dynamically scaling it horizontally or adjusting font size.
    * It prioritizes minimal horizontal squish at base font size, then switches to a smaller font
-   * and scales it horizontally if needed.
+   * and scales it horizontally as needed, even if that means extreme compression.
    */
   adjustLoreTextDisplay() {
     console.log(`--- adjustLoreTextDisplay Start ---`);
@@ -448,7 +448,7 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
     let bestFittingScaleX1 = 1.0;
 
     let iteration1 = 0;
-    while (highScale1 - lowScale1 > this.SCALE_PRECISION) {
+    while (highScale1 - lowScale1 > this.SCALE_PRECISION) { // THIS CONDITION MUST REMAIN
       iteration1++;
       const testScaleX = (lowScale1 + highScale1) / 2;
       const testLogicalWidth = this.fixedOuterWidth / testScaleX;
@@ -476,7 +476,7 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
     const scrollHeightAfterApply1 = innerElement.scrollHeight;
     console.log(`adjustLoreTextDisplay: Pass 1: Nudge check: scrollHeight after apply=${scrollHeightAfterApply1}, outerHeight=${this.fixedOuterHeight}, finalDeterminedScaleX=${finalDeterminedScaleX1.toFixed(6)}`);
 
-    // Only nudge if it still overflows AND we're above MIN_SCALE_X
+    // Nudge only if it still overflows AND we're not at the extreme minimum scale
     if (scrollHeightAfterApply1 > this.fixedOuterHeight && finalDeterminedScaleX1 > this.MIN_SCALE_X) {
       console.log(`adjustLoreTextDisplay: Pass 1: Nudging scale down...`);
       finalDeterminedScaleX1 = Math.max(this.MIN_SCALE_X, finalDeterminedScaleX1 - this.SCALE_PRECISION);
@@ -512,12 +512,12 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // Binary search for Pass 2 (12px font)
       console.log(`adjustLoreTextDisplay: Pass 2: Content (with 12px font) overflows or needs optimal scaling. Starting binary search for scale between ${this.MIN_SCALE_X} and 1.0`);
-      let lowScale2 = this.MIN_SCALE_X;
+      let lowScale2 = this.MIN_SCALE_X; // Start from the very low MIN_SCALE_X
       let highScale2 = 1.0;
       let bestFittingScaleX2 = 1.0;
 
       let iteration2 = 0;
-      while (highScale2 - lowScale2 > this.SCALE_PRECISION) {
+      while (highScale2 - lowScale2 > this.SCALE_PRECISION) { // THIS CONDITION MUST REMAIN
         iteration2++;
         const testScaleX = (lowScale2 + highScale2) / 2;
         const testLogicalWidth = this.fixedOuterWidth / testScaleX;
@@ -534,7 +534,6 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
           highScale2 = testScaleX;
         }
       }
-      console.log(`adjustLoreTextDisplay: Pass 2: Binary search finished in ${iteration2} iterations. Best fitting scale found (before nudge): ${bestFittingScaleX2.toFixed(6)}`);
 
       // Apply and nudge for Pass 2
       let finalDeterminedScaleX2 = bestFittingScaleX2;
@@ -543,9 +542,8 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
       innerElement.style.width = `${finalLogicalWidth2}px`;
 
       const scrollHeightAfterApply2 = innerElement.scrollHeight;
-      console.log(`adjustLoreTextDisplay: Pass 2: Nudge check: scrollHeight after apply=${scrollHeightAfterApply2}, outerHeight=${this.fixedOuterHeight}, finalDeterminedScaleX=${finalDeterminedScaleX2.toFixed(6)}`);
 
-      // Only nudge if it still overflows AND we're above MIN_SCALE_X
+      // Nudge only if it still overflows AND we're not at the extreme minimum scale
       if (scrollHeightAfterApply2 > this.fixedOuterHeight && finalDeterminedScaleX2 > this.MIN_SCALE_X) {
         console.log(`adjustLoreTextDisplay: Pass 2: Nudging scale down...`);
         finalDeterminedScaleX2 = Math.max(this.MIN_SCALE_X, finalDeterminedScaleX2 - this.SCALE_PRECISION);
@@ -554,18 +552,10 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
         innerElement.style.width = `${finalLogicalWidth2}px`;
       }
       currentScaleX = finalDeterminedScaleX2; // This is the ultimate final scale from Pass 2
-
-      console.log(`adjustLoreTextDisplay: Pass 2 Result: finalScaleX=${currentScaleX.toFixed(6)}, finalFontSize=${currentFontSize}px`);
     }
 
     // --- Finalize: Update the component's public property and restore overflow ---
     this.scaleEffect = currentScaleX; // Update the component's scale property for template binding
-
-    console.log(`adjustLoreTextDisplay: Final scaleEffect set to: ${this.scaleEffect.toFixed(6)}`);
-    console.log(`adjustLoreTextDisplay: Inner element final font size: ${innerElement.style.fontSize}`);
-    console.log(`adjustLoreTextDisplay: Inner element final scaleX transform: ${innerElement.style.transform}`);
-    console.log(`adjustLoreTextDisplay: Inner element final scrollHeight: ${innerElement.scrollHeight}`);
-    console.log(`--- adjustLoreTextDisplay End ---`);
 
     // Restore original overflow
     innerElement.style.overflow = originalInnerOverflow;
