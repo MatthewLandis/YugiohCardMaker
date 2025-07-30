@@ -23,12 +23,16 @@
             <p class="CardTitle" [ngClass]="titleStyle"
             [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">{{ title }}</p>
           </div>
+          <img *ngIf="template==='Spell'" src="assets/spellTypes/{{spellType}}.png">
+          <img *ngIf="template==='Trap'" src="assets/trapTypes/{{trapType}}.png">
+
           <div *ngIf="pendulumTemplate">
             <img src="assets/CardTemplates/PendulumTemplates/PendulumShade/Pendulum{{template}}.png" />
             <img src="assets/CardTemplates/PendulumTemplates/PendulumTemplate.png" />
             <p class="PendulumScale" style="left: -29px;">{{pendulumScale}}</p>
             <p class="PendulumScale" style="left: 288px;">{{pendulumScale}}</p>
           </div>
+
           <div *ngIf="template === 'Link'">
             <img *ngIf="linkArrows.topLeft" src="assets/linkArrows/TopLeftArrow.png" />
             <img *ngIf="linkArrows.top" src="assets/linkArrows/TopArrow.png" />
@@ -39,12 +43,13 @@
             <img *ngIf="linkArrows.bottom" src="assets/linkArrows/BottomArrow.png" />
             <img *ngIf="linkArrows.bottomRight" src="assets/linkArrows/BottomRightArrow.png" />
           </div>
+
           <div *ngIf="!['Spell', 'Trap', 'Skill','Legendary Dragon'].includes(template)">
             <img src="assets/attributes/{{attribute}}.png" />
             <img *ngIf="levelType === 'Level'" src="assets/levels/level{{level}}.png" />
-            <img *ngIf="levelType === 'Negative Level'" src="assets/negativeLevels/nLevel{{level}}.png" />
-            <img *ngIf="levelType === 'Rank'" src="assets/ranks/rank{{level}}.png" />
+            <img *ngIf="levelType === 'Negative Level'" src="assets/levels/nLevel{{level}}.png" /> <img *ngIf="levelType === 'Rank'" src="assets/ranks/rank{{level}}.png" />
           </div>
+
           <div *ngIf="!['Spell', 'Trap'].includes(template)">
             <p class="monsterType" [style.transform]="'scaleX(' + scaleMonsterType + ')'">
               <span class="bracket">[</span>
@@ -70,22 +75,31 @@
               <span class="bracket">]</span>
             </p>
           </div>
-          <div *ngIf="pendulumTemplate" class="PendulumEffectTextbox">
-            <p class="PendulumText" [style.transform]="'scaleX(' + scalePendulumEffect + ')'">
-              {{ pendulumEffectText }}
-            </p>
-          </div>
-          <div *ngIf="!['Spell', 'Trap'].includes(template)">
+
+          <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)">
             <div class="loreText">
               <div #loreTextDisplay class="loreTextContent"
                 [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}">{{ effectText }}</div>
             </div>
-            <div *ngIf="!['Skill', 'Legendary Dragon'].includes(template)">
-              <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
-              <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
-            </div>
-            <p class="LinkRating" *ngIf="template === 'Link'">{{ linkRating }}</p>
           </div>
+
+          <div *ngIf="pendulumTemplate">
+            <div class="pendulumText">
+              <div #pendulumEffectTextDisplay class="pendulumEffectTextContent">{{ pendulumEffectText }}</div>
+            </div>
+          </div>
+
+          <div *ngIf="['Spell', 'Trap'].includes(template)">
+            <div class="spellTrapText">
+              <div #spellTrapEffectTextDisplay class="spellTrapTextContent">{{ spellTrapEffect }}</div>
+            </div>
+          </div>
+
+          <div *ngIf="!['Skill', 'Legendary Dragon', 'Spell', 'Trap'].includes(template)">
+            <p class="atkDef" style=" left: 186px;">{{ attack }}</p>
+            <p *ngIf="template !== 'Link'" class="atkDef" style=" left: 267px;">{{ defense }}</p>
+          </div>
+          <p class="LinkRating" *ngIf="template === 'Link'">{{ linkRating }}</p>
         </div>
       </div>
     </div>
@@ -123,6 +137,18 @@
           <input class="input" type="text" size="10" [(ngModel)]="primaryMonsterTypeSlots[0].selectedValue"
             (input)="onPrimaryTypeInput(primaryMonsterTypeSlots[0])">
         </div>
+        <div *ngIf="this.template ==='Spell'" class="labelInputField">
+          <label class="label">Type of Spell</label>
+          <select class="input" [(ngModel)]="spellType" (change)="updateSpellType(spellType)">
+            <option *ngFor="let type of spellTypes" [value]="type">{{type}}</option>
+          </select>
+        </div>
+        <div *ngIf="this.template ==='Trap'" class="labelInputField">
+          <label class="label">Type of Trap</label>
+          <select class="input" [(ngModel)]="trapType" (change)="updateTrapType(trapType)">
+            <option *ngFor="let type of trapTypes" [value]="type">{{type}}</option>
+          </select>
+        </div>
         <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)" class="labelInputField">
           <label class="label">Attribute</label>
           <div class="attributeRow">
@@ -153,7 +179,7 @@
           class="labelInputField">
           <label class="label">Pendulum Template</label>
           <input class="checkbox" type="checkbox" [(ngModel)]="pendulumTemplate"
-            (change)="autoMonsterTypeAdjustment()" />
+            (change)="autoMonsterTypeAdjustment(); onPendulumEffectTextChange()" />
         </div>
         <div *ngIf="pendulumTemplate">
           <div class="labelInputField" style="width: 100%;">
@@ -222,24 +248,36 @@
         </div>
       </div>
     </div>
+
     <div class="row">
       <div *ngIf="!['Spell', 'Trap'].includes(template)" class="effectInputs">
         <div class="group">
           <p class="label">Card {{effectTypes}} Text</p>
           <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
-            [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}" (input)="onEffectTextChange()"
-            (paste)="onEffectTextChange()">
-            </textarea>
+            [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
+            (input)="onEffectTextChange()" (paste)="onEffectTextChange()">
+          </textarea>
         </div>
       </div>
+
+      <div *ngIf="['Spell', 'Trap'].includes(template)" class="effectInputs">
+        <div class="group">
+          <p class="label">{{template}} Effect Text</p>
+          <textarea class="textarea" [(ngModel)]="spellTrapEffect" rows="8" cols="40"
+            (input)="onSpellTrapEffectTextChange()" (paste)="onSpellTrapEffectTextChange()">
+          </textarea>
+        </div>
+      </div>
+
       <div *ngIf="pendulumTemplate" class="effectInputs">
         <div class="group">
           <p class="label">Pendulum Effect Text</p>
           <textarea class="textarea" [(ngModel)]="pendulumEffectText" rows="8" cols="40"
-            (input)="adjustPendulumEffectText()">
-        </textarea>
+            (input)="onPendulumEffectTextChange()" (paste)="onPendulumEffectTextChange()">
+          </textarea>
         </div>
       </div>
+
       <div *ngIf="template === 'Link'" class="effectInputs">
         <div class="group">
           <p class="label">Link Arrows</p>
@@ -299,23 +337,21 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)">
-      <div class="row">
-        <div class="row2">
-          <div class="labelInputField">
-            <label class="short">Attack</label>
-            <input class="input" type="text" size="1" [(ngModel)]="attack" />
-          </div>
-          <div *ngIf="template != 'Link'" class="labelInputField">
-            <label class="short">Defense</label>
-            <input class="input" type="text" size="1" [(ngModel)]="defense" />
-          </div>
+    <div class="row">
+      <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)" class="row2">
+        <div class="labelInputField">
+          <label class="short">Attack</label>
+          <input class="input" type="text" size="1" [(ngModel)]="attack" />
         </div>
-        <div class="row2">
-          <div class="labelInputField">
-            <label class="short">Card Art</label>
-            <input type="file" id="file-upload" (change)="onImageSelected($event)" style="margin-left: 1rem;" />
-          </div>
+        <div *ngIf="template != 'Link'" class="labelInputField">
+          <label class="short">Defense</label>
+          <input class="input" type="text" size="1" [(ngModel)]="defense" />
+        </div>
+      </div>
+      <div class="row2">
+        <div class="labelInputField">
+          <label class="short">Card Art</label>
+          <input type="file" id="file-upload" (change)="onImageSelected($event)" style="margin-left: 1rem;" />
         </div>
       </div>
     </div>

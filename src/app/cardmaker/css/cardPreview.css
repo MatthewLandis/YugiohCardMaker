@@ -92,12 +92,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: grayscale(100%) 
-  drop-shadow(-1px 0 rgba(0, 0, 0, 0.4)) 
-  drop-shadow(1px 0 rgba(0, 0, 0, 0.4)) 
-  drop-shadow(0 -1px rgba(0, 0, 0, 0.4)) 
-  drop-shadow(0 1px rgba(0, 0, 0, 0.3)) 
-  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+  filter: grayscale(100%) drop-shadow(-1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(1px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 -1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px rgba(0, 0, 0, 0.3)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
 }
 
 .UltraRare {
@@ -105,11 +100,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) 
-  drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) 
-  drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) 
-  drop-shadow(0 1px rgba(0, 0, 0, 0.2)) 
-  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
 }
 
 .Barian {
@@ -117,26 +108,22 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) 
-  drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) 
-  drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) 
-  drop-shadow(0 1px rgba(0, 0, 0, 0.2)) 
-  drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(-1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(1px 0 rgba(0, 0, 0, 0.2)) drop-shadow(0 -1px rgba(0, 0, 0, 0.2)) drop-shadow(0 1px rgba(0, 0, 0, 0.2)) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
 }
 
 .skillFont {
-    position: absolute;
-    top: -5px;
-    left: -2px;
-    width: 304px;
-    height: 38px;
-    color: white;
-    font-size: 38px;
-    font-family: Arial;
-    font-weight: 700;
-    -webkit-text-stroke: 1px black;
-    -webkit-text-fill-color: white;
-    letter-spacing: -1px;
+  position: absolute;
+  top: -5px;
+  left: -2px;
+  width: 304px;
+  height: 38px;
+  color: white;
+  font-size: 38px;
+  font-family: Arial;
+  font-weight: 700;
+  -webkit-text-stroke: 1px black;
+  -webkit-text-fill-color: white;
+  letter-spacing: -1px;
 }
 
 .linkArrowsGrid {
@@ -185,6 +172,7 @@
 .monsterType .slash {
   margin: 1px;
 }
+
 /*********************************************************************************************************************/
 /* Outer container: Fixed dimensions, clips content */
 .loreText {
@@ -197,50 +185,63 @@
 
 /* Inner container: This is what actually holds the text and gets scaled */
 .loreTextContent {
-  /* Inherit/set text-related styles here */
   text-align: justify;
   line-height: 0.9;
   font-size: 14px;
-  font-family: 'effect'; /* Ensure this font is loaded */
-  white-space: pre-wrap; /* Preserve line breaks from textarea */
-
-  /* Initial state: no transform, width is 100% of parent */
+  font-family: 'effect';
+  white-space: pre-wrap;
   transform: scaleX(1);
   transform-origin: left center;
-  width: 100%; /* Initially fills the parent loreText */
-  height: 100%; /* Initially fills the parent loreText */
-
-  /* Ensure it doesn't add extra space like padding/border that breaks calculations */
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
 }
+
 /*********************************************************************************************************************/
-.SpellTrapTextbox {
+.spellTrapText {
   position: absolute;
-  top: 866px;
-  left: -356px;
-  width: 672px;
-  transform-origin: left center;
+  top: 439px;
+  left: 32px;
+  width: 336px;
+  height: 105px;
 }
 
-.PendulumEffectTextbox {
-  position: absolute;
-  top: 378px;
-  left: 62px;
-  width: 278px;
-  transform-origin: left center;
-}
-
-
-
-.PendulumText,
-.spellText {
+.spellTrapTextContent {
   text-align: justify;
-  line-height: 1;
-  white-space: pre-line;
-  font-size: 13px;
-  font-family: 'MatrixBook';
+  line-height: 0.9;
+  font-size: 14px;
+  font-family: 'effect';
+  white-space: pre-wrap;
+  transform: scaleX(1);
+  transform-origin: left center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
+/*********************************************************************************************************************/
+.pendulumText {
+  position: absolute;
+  top: 369px;
+  left: 65px;
+  width: 270px;
+  height: 55px;
+}
+
+.pendulumEffectTextContent {
+  text-align: justify;
+  line-height: 0.9;
+  font-size: 14px;
+  font-family: 'effect';
+  white-space: pre-wrap;
+  transform: scaleX(1);
+  transform-origin: left center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/*********************************************************************************************************************/
 .atkDef {
   position: absolute;
   font-size: 18px;
@@ -251,12 +252,11 @@
 }
 
 .LinkRating {
-    font-family: "rogsansrfstd-ub";
-    position: absolute;
-    top: 528px;
-    left: 355px;
-    transform: scaleX(1.3);
-    font-size: 12px;
+  font-family: "rogsansrfstd-ub";
+  position: absolute;
+  top: 524px;
+  left: 355px;
+  font-size: 15px;
 }
 
 .PendulumScale {

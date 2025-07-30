@@ -20,14 +20,12 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   attributeTypes = ['Dark', 'Light', 'Earth', 'Wind', 'Fire', 'Water', 'Divine'];
 
-
   template = 'Normal';
   pendulumTemplate = false;
   titleStyle = 'Rare';
   title = 'Bitron';
   attribute = 'Earth';
   level = 2;
-  spellTrapType = 'Normal';
 
   primaryMonsterTypeSlots: PrimaryMonsterTypeSlot[] = [];
   private nextPrimaryTypeId: number = 1;
@@ -40,17 +38,20 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   defense = '2000';
   levelType = 'Level';
   linkRating = 3;
-
-  effectText = "A new species found in electronic space. There's not much information on it.";
   pendulumScale = 4;
-  pendulumEffectText = "Once per turn: You can target 1 face-up monster your opponent controls; halve its original ATK.";
+
+  effectText = "A new species found in electronic space. There's not much information on it."; // For Monsters (Lore/Effect)
+  pendulumEffectText = "Once per turn: You can target 1 face-up monster your opponent controls; halve its original ATK."; // For Pendulum Monsters
+  spellTrapEffect = "Activate only when your opponent declares an attack. Negate the attack and end the Battle Phase."; // For Spells/Traps
 
   selectedLevel: number | null = this.level;
 
   coreTemplates = ['Ritual', 'Fusion', 'Synchro', 'Dark Synchro', 'Xyz', 'Link'];
   titleStyles = ['Common', 'Rare', 'SecretRare', 'UltraRare', 'Barian'];
   levelTypes = ['Level', 'Rank', 'Nlevel'];
-  spellTypes = ['Normal', 'Continuous', 'Equip', 'Ritual', 'QuickPlay', 'Field'];
+  spellType = 'Normal';
+  spellTypes = ['Normal', 'Continuous', 'Equip', 'Ritual', 'Quick-Play', 'Field'];
+  trapType = 'Normal';
   trapTypes = ['Normal', 'Continuous', 'Counter'];
   divineBeasts = ['Slifer', 'Obelisk', 'Ra'];
   effectTypes: 'Lore' | 'Effect' = 'Lore';
@@ -82,10 +83,9 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('primaryMonsterTypeDropdownToggle') primaryMonsterTypeDropdownToggle!: ElementRef;
   @ViewChild('abilityDropdownList') abilityDropdownList!: ElementRef;
   @ViewChild('abilityDropdownToggle') abilityDropdownToggle!: ElementRef;
-  @ViewChild('loreTextDisplay') loreTextContentElement!: ElementRef; // This is the container for all lore text
+  @ViewChild('loreTextDisplay') loreTextDisplayElement!: ElementRef;
   @ViewChild('pendulumEffectTextDisplay') pendulumEffectTextDisplayElement!: ElementRef;
   @ViewChild('spellTrapEffectTextDisplay') spellTrapEffectTextDisplayElement!: ElementRef;
-
 
   private context!: CanvasRenderingContext2D;
 
@@ -99,21 +99,22 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
     const offscreenCanvas = document.createElement('canvas');
     this.context = offscreenCanvas.getContext('2d') as CanvasRenderingContext2D;
   }
+
   ngOnDestroy() {
   }
 
   ngAfterViewInit(): void {
-    // Perform initial adjustments when the component loads
-    this.adjustLoreTextDisplay();
-    this.adjustPendulumEffectText();
-    this.adjustSpellEffectText();
+    setTimeout(() => {
+      this.adjustLoreTextDisplay();
+      this.adjustPendulumEffectText();
+      this.adjustSpellEffectText();
+    }, 0);
   }
 
   ngOnInit(): void {
     this.updateLevelType();
     this.addPrimaryMonsterTypeSlot('Cyberse');
     this.autoMonsterTypeAdjustment();
-
   }
 
   @HostListener('document:click', ['$event'])
@@ -141,8 +142,6 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-
-
 
   capitalizeFirstLetter(value: string): string {
     if (!value) {
@@ -218,17 +217,21 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updatePrimaryMonsterType();
     this.updateCoreMonsterType();
     this.updateLastMonsterType();
-    this.resetSpellTrapType();
     this.setLoreOrEffect();
     this.pendulumUpdate();
     this.autoTitleTextAdjustment();
     this.autoMonsterTypeAdjustment();
-    // Defer these calls to ensure the DOM has updated
+
     setTimeout(() => {
-      this.adjustLoreTextDisplay();
-      this.adjustPendulumEffectText();
-      this.adjustSpellEffectText();
-    });
+      if (['Spell', 'Trap'].includes(this.template)) {
+        this.adjustSpellEffectText();
+      } else if (this.pendulumTemplate) {
+        this.adjustPendulumEffectText();
+        this.adjustLoreTextDisplay();
+      } else {
+        this.adjustLoreTextDisplay();
+      }
+    }, 50);
   }
 
   pendulumUpdate() {
@@ -245,6 +248,14 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateAttribute(attribute: string) {
     this.attribute = (attribute);
+  }
+
+  updateSpellType(spellType: string) {
+    this.spellType = (spellType);
+  }
+
+  updateTrapType(trapType: string) {
+    this.trapType = (trapType);
   }
 
   updateLevelValue(level: number) {
@@ -292,15 +303,15 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
         this.template === 'Token' ? 'Token' :
           this.template === 'Skill' ? 'Skill' :
             this.template === 'Legendary Dragon' ? '' :
-            this.coreTemplates.includes(this.template) ? (this.effectTypes === 'Effect' ? 'Effect' : '') :
-              (effectTemplates.includes(this.template) ? 'Effect' : this.lastMonsterType);
+              this.coreTemplates.includes(this.template) ? (this.effectTypes === 'Effect' ? 'Effect' : '') :
+                (effectTemplates.includes(this.template) ? 'Effect' : this.lastMonsterType);
     this.effectTypes =
       this.template === 'Normal' || this.template === 'Token' ? 'Lore' :
         (effectTemplates.includes(this.template) ? 'Effect' : this.effectTypes);
   }
 
   setLoreOrEffect() {
-    if (this.template === 'Normal') {
+    if (this.template === 'Normal' || this.template === 'Token') {
       this.effectTypes = 'Lore';
     } else {
       this.effectTypes = 'Effect';
@@ -314,14 +325,12 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resetLinkRating() {
-     this.linkArrows = {
-    topLeft: false, top: false, topRight: false,
-    left: false, right: false,
-    bottomLeft: false, bottom: false, bottomRight: false
-  };
+    this.linkArrows = {
+      topLeft: false, top: false, topRight: false,
+      left: false, right: false,
+      bottomLeft: false, bottom: false, bottomRight: false
+    };
   }
-
-  resetSpellTrapType() { }
 
   imageUrl: string | null = null;
   onImageSelected(event: Event): void {
@@ -380,21 +389,18 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
       .join('/');
   }
 
-  // Event handler for effectText changes - now using setTimeout
   onEffectTextChange(): void {
     setTimeout(() => {
       this.adjustLoreTextDisplay();
     });
   }
 
-  // Event handler for pendulumEffectText changes - now using setTimeout
   onPendulumEffectTextChange(): void {
     setTimeout(() => {
       this.adjustPendulumEffectText();
     });
   }
 
-  // Event handler for spellTrapEffectText changes - now using setTimeout
   onSpellTrapEffectTextChange(): void {
     setTimeout(() => {
       this.adjustSpellEffectText();
@@ -402,231 +408,212 @@ export class CardMakerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private readonly fixedOuterWidth = 336;
-  private readonly fixedOuterHeight = 77; // This is the height of the outer container (should fit 6 lines @ 14px, 7 lines @ 12px, 8 lines @ 10px, approx 9 lines @ 8px)
+  private readonly fixedOuterHeight = 77;
+  private readonly fixedOuterHeight2 = 105;
+
+  private readonly fixedOuterWidthP = 270;
+  private readonly fixedOuterHeightP = 55;
+
   private readonly baseFontSize = 14;
   private readonly baseLineHeightRatio = 0.9;
-  private readonly smallestFontSize = 12; // Font size for 7-line support
-  private readonly smallestFontSize2 = 10; // Font size for 8-line support
-  private readonly smallestFontSize3 = 9; // NEW: Font size for 9-line support
+  private readonly smallestFontSize = 12;
+  private readonly smallestFontSize2 = 10;
+  private readonly smallestFontSize3 = 9;
 
-  // Parameters for the iterative search
-  private readonly SCALE_PRECISION = 0.00001; // Extremely high precision - REQUIRED for binary search
-  private readonly MIN_SCALE_X = 0.01; // Allows for very aggressive horizontal squishing to prevent overflow
-  private readonly SCALE_TRIGGER_THRESHOLD = 0.6; // Trigger 12px font if 14px font scaleX is less than this
-  private readonly SCALE_TRIGGER_THRESHOLD2 = 0.6; // Trigger 10px font if 12px font scaleX is less than this
-  private readonly SCALE_TRIGGER_THRESHOLD3 = 0.6; // NEW: Trigger 8px font if 10px font scaleX is less than this
+  private readonly SCALE_PRECISION = 0.001;
+  private readonly MIN_SCALE_X = 0.01;
+  private readonly SCALE_TRIGGER_THRESHOLD = 0.6;
+  private readonly SCALE_TRIGGER_THRESHOLD2 = 0.6;
+  private readonly SCALE_TRIGGER_THRESHOLD3 = 0.6;
   private readonly TRANSFORM_ORIGIN = 'left top';
 
-  scaleEffect = 1; // Public property to update the template
+  scaleEffect = 1;
 
-  /**
-   * Helper function to calculate the best scaleX for a given element and height budget.
-   * Resets element styles for accurate measurement before calculation.
-   */
   private calculateBestScaleX(
     element: HTMLElement,
     heightBudget: number,
-    fontSize: number // Passed font size for consistent measurement
+    fontSize: number
   ): { scaleX: number, finalHeight: number } {
-    console.log(`  calculateBestScaleX called for element with text length: ${element.textContent?.length}, font: ${fontSize}px, budget: ${heightBudget}px`);
 
-    // Reset element to a clean state for accurate measurement
     element.style.transform = 'scaleX(1)';
     element.style.transformOrigin = this.TRANSFORM_ORIGIN;
     element.style.width = `${this.fixedOuterWidth}px`;
-    element.style.fontSize = `${fontSize}px`; // Use the passed font size
+    element.style.fontSize = `${fontSize}px`;
     element.style.lineHeight = `${this.baseLineHeightRatio}`;
     element.style.whiteSpace = 'pre-wrap';
-    element.style.overflow = 'visible'; // Ensure scrollHeight can be measured accurately
-    // Force a reflow to get accurate initial scrollHeight
+    element.style.overflow = 'visible';
     element.getBoundingClientRect();
 
     const initialContentHeight = element.scrollHeight;
-    console.log(`  Initial content height (scaleX=1, font=${fontSize}px): ${initialContentHeight}px`);
-
 
     if (initialContentHeight <= heightBudget) {
-      console.log(`  Content fits at scaleX=1.0. Returning 1.0.`);
       return { scaleX: 1.0, finalHeight: initialContentHeight };
     }
 
-    // Binary search to find the optimal scaleX
     let lowScale = this.MIN_SCALE_X;
     let highScale = 1.0;
-    let bestFittingScaleX = 1.0; // Default to 1.0, will be updated if a better fit is found
+    let bestFittingScaleX = 1.0;
 
     let iterations = 0;
-    while (highScale - lowScale > this.SCALE_PRECISION && iterations < 100) { // Added iteration limit to prevent infinite loops
+    while (highScale - lowScale > this.SCALE_PRECISION && iterations < 100) {
       iterations++;
       const testScaleX = (lowScale + highScale) / 2;
       const testLogicalWidth = this.fixedOuterWidth / testScaleX;
 
-      // Apply test styles
       element.style.transform = `scaleX(${testScaleX})`;
       element.style.width = `${testLogicalWidth}px`;
-      // Force a reflow to get accurate scrollHeight for the test scale
       element.getBoundingClientRect();
 
       const currentTestHeight = element.scrollHeight;
-      // console.log(`  Iteration ${iterations}: testScaleX=${testScaleX.toFixed(6)}, testLogicalWidth=${testLogicalWidth.toFixed(2)}, currentTestHeight=${currentTestHeight}px`);
 
       if (currentTestHeight <= heightBudget) {
-        bestFittingScaleX = testScaleX; // This scale fits, try for a larger one
+        bestFittingScaleX = testScaleX;
         lowScale = testScaleX;
       } else {
-        highScale = testScaleX; // This scale doesn't fit, need a smaller one
+        highScale = testScaleX;
       }
     }
-    console.log(`  Binary search finished in ${iterations} iterations. bestFittingScaleX: ${bestFittingScaleX.toFixed(6)}`);
 
-
-    // Apply the best fitting scale and check for slight overflow, nudging if necessary
     let finalDeterminedScaleX = bestFittingScaleX;
     let finalLogicalWidth = this.fixedOuterWidth / finalDeterminedScaleX;
     element.style.transform = `scaleX(${finalDeterminedScaleX})`;
     element.style.width = `${finalLogicalWidth}px`;
-    element.getBoundingClientRect(); // Force reflow after final application
-    console.log(`  After binary search, initial application: scrollHeight=${element.scrollHeight}px`);
+    element.getBoundingClientRect();
 
-
-    // Nudge down if still overflowing after the binary search
     if (element.scrollHeight > heightBudget && finalDeterminedScaleX > this.MIN_SCALE_X) {
-      console.log(`  Nudging down. Current scrollHeight (${element.scrollHeight}px) > heightBudget (${heightBudget}px)`);
       finalDeterminedScaleX = Math.max(this.MIN_SCALE_X, finalDeterminedScaleX - this.SCALE_PRECISION);
       finalLogicalWidth = this.fixedOuterWidth / finalDeterminedScaleX;
       element.style.transform = `scaleX(${finalDeterminedScaleX})`;
       element.style.width = `${finalLogicalWidth}px`;
-      element.getBoundingClientRect(); // One last reflow
-      console.log(`  After nudging: finalDeterminedScaleX=${finalDeterminedScaleX.toFixed(6)}, scrollHeight=${element.scrollHeight}px`);
+      element.getBoundingClientRect();
     }
-    console.log(`  calculateBestScaleX returning scale: ${finalDeterminedScaleX.toFixed(6)}, finalHeight: ${element.scrollHeight}px`);
 
     return { scaleX: finalDeterminedScaleX, finalHeight: element.scrollHeight };
   }
 
-
-  /**
-   * Adjusts the lore text display by dynamically scaling it horizontally or adjusting font size.
-   * It prioritizes minimal horizontal squish at base font size, then switches to a smaller font
-   * and scales it horizontally as needed, even if that means extreme compression.
-   *
-   * Now includes 14px, 12px, 10px, and 8px font size support.
-   */
   adjustLoreTextDisplay() {
-    console.log(`--- adjustLoreTextDisplay Start (${this.template}, ${this.title}) ---`);
-    const innerElement = this.loreTextContentElement.nativeElement as HTMLElement;
-    const originalInnerOverflow = innerElement.style.overflow; // Save original overflow style
+    const innerElement = this.loreTextDisplayElement.nativeElement as HTMLElement;
+    const originalInnerOverflow = innerElement.style.overflow;
 
-    // IMPORTANT: Clear previous transform/width before initial measurements for correct scrollHeight
-    // Also ensure overflow is visible during measurement phases
     innerElement.style.transform = 'scaleX(1)';
     innerElement.style.width = `${this.fixedOuterWidth}px`;
     innerElement.style.overflow = 'visible';
-    innerElement.style.whiteSpace = 'pre-wrap'; // Ensure wrapping behavior
-    innerElement.textContent = this.effectText; // Ensure the element has the current text content for measurement
+    innerElement.style.whiteSpace = 'pre-wrap';
+    innerElement.textContent = this.effectText;
 
-    let finalFontSize = this.baseFontSize; // Start with 14px
+    let finalFontSize = this.baseFontSize;
     let effectiveScaleX = 1.0;
 
-    // --- Pass 1: Test with baseFontSize (14px) ---
-    console.log(`adjustLoreTextDisplay: Pass 1 - Testing with ${this.baseFontSize}px font.`);
-    let result14px = this.calculateBestScaleX(
-      innerElement,
-      this.fixedOuterHeight,
-      this.baseFontSize
-    );
+    let result14px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight, this.baseFontSize);
     effectiveScaleX = result14px.scaleX;
-    console.log(`adjustLoreTextDisplay: Pass 1 result scaleX: ${effectiveScaleX.toFixed(6)}`);
 
-
-    // --- Conditional Pass 2: Check if 12px font is needed ---
     if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD) {
-      finalFontSize = this.smallestFontSize; // Set to 12px
-      console.log(`adjustLoreTextDisplay: Pass 2 - 14px scale (${effectiveScaleX.toFixed(6)}) < threshold (${this.SCALE_TRIGGER_THRESHOLD}). Retesting with ${finalFontSize}px font.`);
-
-      let result12px = this.calculateBestScaleX(
-        innerElement,
-        this.fixedOuterHeight,
-        finalFontSize
-      );
+      finalFontSize = this.smallestFontSize;
+      let result12px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight, finalFontSize);
       effectiveScaleX = result12px.scaleX;
-      console.log(`adjustLoreTextDisplay: Pass 2 result scaleX: ${effectiveScaleX.toFixed(6)}`);
 
-
-      // --- Conditional Pass 3: Check if 10px font is needed ---
       if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD2) {
-        finalFontSize = this.smallestFontSize2; // Set to 10px
-        console.log(`adjustLoreTextDisplay: Pass 3 - 12px scale (${effectiveScaleX.toFixed(6)}) < threshold (${this.SCALE_TRIGGER_THRESHOLD2}). Retesting with ${finalFontSize}px font.`);
-
-        let result10px = this.calculateBestScaleX(
-          innerElement,
-          this.fixedOuterHeight,
-          finalFontSize
-        );
+        finalFontSize = this.smallestFontSize2;
+        let result10px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight, finalFontSize);
         effectiveScaleX = result10px.scaleX;
-        console.log(`adjustLoreTextDisplay: Pass 3 result scaleX: ${effectiveScaleX.toFixed(6)}`);
 
-        // --- NEW Conditional Pass 4: Check if 8px font is needed ---
         if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD3) {
-          finalFontSize = this.smallestFontSize3; // Set to 8px
-          console.log(`adjustLoreTextDisplay: Pass 4 - 10px scale (${effectiveScaleX.toFixed(6)}) < threshold (${this.SCALE_TRIGGER_THRESHOLD3}). Retesting with ${finalFontSize}px font.`);
-
-          let result8px = this.calculateBestScaleX(
-            innerElement,
-            this.fixedOuterHeight,
-            finalFontSize
-          );
+          finalFontSize = this.smallestFontSize3;
+          let result8px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight, finalFontSize);
           effectiveScaleX = result8px.scaleX;
-          console.log(`adjustLoreTextDisplay: Pass 4 result scaleX: ${effectiveScaleX.toFixed(6)}`);
         }
       }
     }
 
-    // --- Final application of determined font size and scale ---
     this.scaleEffect = effectiveScaleX;
     innerElement.style.fontSize = `${finalFontSize}px`;
     innerElement.style.transform = `scaleX(${effectiveScaleX})`;
-    innerElement.style.width = `${this.fixedOuterWidth / effectiveScaleX}px`; // Adjust logical width
-    innerElement.style.overflow = originalInnerOverflow; // Restore original overflow style
-
-    console.log(`adjustLoreTextDisplay: Final: Font Size: ${finalFontSize}px, ScaleX: ${this.scaleEffect.toFixed(6)}`);
-    console.log(`--- adjustLoreTextDisplay End ---`);
+    innerElement.style.width = `${this.fixedOuterWidth / effectiveScaleX}px`;
+    innerElement.style.overflow = originalInnerOverflow;
   }
 
-
   adjustPendulumEffectText(): void {
-    if (!this.pendulumEffectTextDisplayElement) {
-      console.warn('pendulumEffectTextDisplayElement is not available.');
-      return;
+    const innerElement = this.pendulumEffectTextDisplayElement.nativeElement as HTMLElement;
+    const originalInnerOverflow = innerElement.style.overflow;
+
+    innerElement.style.transform = 'scaleX(1)';
+    innerElement.style.width = `${this.fixedOuterWidthP}px`;
+    innerElement.style.overflow = 'visible';
+    innerElement.style.whiteSpace = 'pre-wrap';
+    innerElement.textContent = this.pendulumEffectText;
+
+    let finalFontSize = this.baseFontSize;
+    let effectiveScaleX = 1.0;
+
+    let result14px = this.calculateBestScaleX(innerElement, this.fixedOuterHeightP, this.baseFontSize);
+    effectiveScaleX = result14px.scaleX;
+
+    if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD) {
+      finalFontSize = this.smallestFontSize;
+      let result12px = this.calculateBestScaleX(innerElement, this.fixedOuterHeightP, finalFontSize);
+      effectiveScaleX = result12px.scaleX;
+
+      if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD2) {
+        finalFontSize = this.smallestFontSize2;
+        let result10px = this.calculateBestScaleX(innerElement, this.fixedOuterHeightP, finalFontSize);
+        effectiveScaleX = result10px.scaleX;
+
+        if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD3) {
+          finalFontSize = this.smallestFontSize3;
+          let result8px = this.calculateBestScaleX(innerElement, this.fixedOuterHeightP, finalFontSize);
+          effectiveScaleX = result8px.scaleX;
+        }
+      }
     }
-    const element = this.pendulumEffectTextDisplayElement.nativeElement as HTMLElement;
-    element.textContent = this.pendulumEffectText; // Ensure text content is set
-    const heightBudget = 30; // Example height for pendulum effect - you might want to make this dynamic as well
-    const scaleResult = this.calculateBestScaleX(element, heightBudget, this.baseFontSize); // Using baseFontSize for now
-    this.scalePendulumEffect = scaleResult.scaleX;
-    element.style.transform = `scaleX(${this.scalePendulumEffect})`;
-    element.style.width = `${this.fixedOuterWidth / this.scalePendulumEffect}px`; // Apply adjusted width
-    element.style.fontSize = `${this.baseFontSize}px`; // Ensure font size is set
-    element.style.overflow = 'hidden'; // Restore overflow as calculateBestScaleX sets it to visible
-    console.log(`Pendulum Effect Scale: ${this.scalePendulumEffect.toFixed(6)}, Font Size: ${element.style.fontSize}`);
+
+    this.scalePendulumEffect = effectiveScaleX;
+    innerElement.style.fontSize = `${finalFontSize}px`;
+    innerElement.style.transform = `scaleX(${effectiveScaleX})`;
+    innerElement.style.width = `${this.fixedOuterWidthP / effectiveScaleX}px`;
+    innerElement.style.overflow = originalInnerOverflow;
   }
 
 
   adjustSpellEffectText(): void {
-    if (!this.spellTrapEffectTextDisplayElement) {
-      console.warn('spellTrapEffectTextDisplayElement is not available.');
-      return;
+    const innerElement = this.spellTrapEffectTextDisplayElement.nativeElement as HTMLElement;
+    const originalInnerOverflow = innerElement.style.overflow;
+
+    innerElement.style.transform = 'scaleX(1)';
+    innerElement.style.transformOrigin = this.TRANSFORM_ORIGIN;
+    innerElement.style.width = `${this.fixedOuterWidth}px`;
+    innerElement.style.overflow = 'visible';
+    innerElement.style.whiteSpace = 'pre-wrap';
+    innerElement.textContent = this.spellTrapEffect;
+
+    let finalFontSize = this.baseFontSize;
+    let effectiveScaleX = 1.0;
+
+    let result14px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight2, this.baseFontSize);
+    effectiveScaleX = result14px.scaleX;
+
+    if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD) {
+      finalFontSize = this.smallestFontSize;
+      let result12px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight2, finalFontSize);
+      effectiveScaleX = result12px.scaleX;
+
+      if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD2) {
+        finalFontSize = this.smallestFontSize2;
+        let result10px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight2, finalFontSize);
+        effectiveScaleX = result10px.scaleX;
+
+        if (effectiveScaleX < this.SCALE_TRIGGER_THRESHOLD3) {
+          finalFontSize = this.smallestFontSize3;
+          let result8px = this.calculateBestScaleX(innerElement, this.fixedOuterHeight2, finalFontSize);
+          effectiveScaleX = result8px.scaleX;
+        }
+      }
     }
-    const element = this.spellTrapEffectTextDisplayElement.nativeElement as HTMLElement;
-    element.textContent = this.effectText; // Or `this.spellTrapEffectText` if you add a separate property
-    const heightBudget = 76; // Example height for spell/trap effect - you might want to make this dynamic as well
-    const scaleResult = this.calculateBestScaleX(element, heightBudget, this.baseFontSize); // Using baseFontSize for now
-    this.SpellscaleEffect = scaleResult.scaleX;
-    element.style.transform = `scaleX(${this.SpellscaleEffect})`;
-    element.style.width = `${this.fixedOuterWidth / this.SpellscaleEffect}px`; // Apply adjusted width
-    element.style.fontSize = `${this.baseFontSize}px`; // Ensure font size is set
-    element.style.overflow = 'hidden'; // Restore overflow as calculateBestScaleX sets it to visible
-    console.log(`Spell/Trap Effect Scale: ${this.SpellscaleEffect.toFixed(6)}, Font Size: ${element.style.fontSize}`);
+
+    this.SpellscaleEffect = effectiveScaleX;
+    innerElement.style.fontSize = `${finalFontSize}px`;
+    innerElement.style.transform = `scaleX(${effectiveScaleX})`;
+    innerElement.style.width = `${this.fixedOuterWidth / effectiveScaleX}px`;
+    innerElement.style.overflow = originalInnerOverflow;
   }
 
   async generateCardPng(): Promise<void> {
