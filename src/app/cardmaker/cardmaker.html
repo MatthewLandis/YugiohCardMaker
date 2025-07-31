@@ -76,7 +76,7 @@
             </p>
           </div>
 
-          <div *ngIf="!['Spell', 'Trap', 'Skill', 'Legendary Dragon'].includes(template)">
+          <div *ngIf="!['Spell', 'Trap'].includes(template)">
             <div class="loreText">
               <div #loreTextDisplay class="loreTextContent"
                 [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}">{{ effectText }}</div>
