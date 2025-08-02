@@ -6,4 +6,4 @@ This project serves as a showcase of my web development skills, especially in An
 I do not own any of the original art assets, and this site is not intended for commercial use.
 
 That being said, enjoy the website and start creating cards here!
-https://landiscardmaker.netlify.app/CardMaker
+https://landiscardmaker.netlify.app
