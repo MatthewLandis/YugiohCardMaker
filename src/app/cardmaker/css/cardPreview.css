@@ -273,7 +273,12 @@
 
 @media (min-width: 1300px) {
   .card {
-    transform: scale(1.2);
+    transform: scale(1.5);
+  }
+
+  .cardMaker {
+    transform: scale(1.1);
+    transform-origin: center right;
   }
 }
 
@@ -283,7 +288,7 @@
   }
 
   .cardMaker {
-    transform: scale(1.2);
-    transform-origin: top right;
+    transform: scale(1.4);
+    transform-origin: center right;
   }
 }

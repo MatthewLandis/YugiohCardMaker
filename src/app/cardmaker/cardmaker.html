@@ -20,8 +20,8 @@
         </div>
         <div class="CardDisplay">
           <div class="TitleTextbox">
-            <p class="CardTitle" [ngClass]="titleStyle"
-            [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">{{ title }}</p>
+            <p class="CardTitle" [ngClass]="titleStyle" [style.transform]="'scaleX(' + (scaleTitle * 0.96) + ')'">{{
+              title }}</p>
           </div>
           <img *ngIf="template==='Spell'" src="assets/spellTypes/{{spellType}}.png">
           <img *ngIf="template==='Trap'" src="assets/trapTypes/{{trapType}}.png">
@@ -47,7 +47,8 @@
           <div *ngIf="!['Spell', 'Trap', 'Skill','Legendary Dragon'].includes(template)">
             <img src="assets/attributes/{{attribute}}.png" />
             <img *ngIf="levelType === 'Level'" src="assets/levels/level{{level}}.png" />
-            <img *ngIf="levelType === 'Negative Level'" src="assets/levels/nLevel{{level}}.png" /> <img *ngIf="levelType === 'Rank'" src="assets/ranks/rank{{level}}.png" />
+            <img *ngIf="levelType === 'Negative Level'" src="assets/levels/nLevel{{level}}.png" /> <img
+              *ngIf="levelType === 'Rank'" src="assets/ranks/rank{{level}}.png" />
           </div>
 
           <div *ngIf="!['Spell', 'Trap'].includes(template)">
@@ -105,6 +106,7 @@
     </div>
   </div>
 
+  <div class="c2">
   <aside class="cardMaker">
     <div class="templates">
       <label class="label">Templates</label>
@@ -254,8 +256,8 @@
         <div class="group">
           <p class="label">Card {{effectTypes}} Text</p>
           <textarea class="textarea" [(ngModel)]="effectText" rows="8" cols="40"
-            [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}"
-            (input)="onEffectTextChange()" (paste)="onEffectTextChange()">
+            [ngStyle]="effectTypes === 'Lore' ? {'font-style': 'italic'} : {}" (input)="onEffectTextChange()"
+            (paste)="onEffectTextChange()">
           </textarea>
         </div>
       </div>
@@ -348,15 +350,14 @@
           <input class="input" type="text" size="1" [(ngModel)]="defense" />
         </div>
       </div>
-      <div class="row2">
-        <div class="labelInputField">
-          <label class="short">Card Art</label>
-          <input type="file" id="file-upload" (change)="onImageSelected($event)" style="margin-left: 1rem;" />
-        </div>
-      </div>
     </div>
-    <div class="generateCard">
-      <button (click)="generateCardPng()">Generate Card Image</button>
+    <div class="labelInputField">
+      <label class="short">Card Art</label>
+      <input type="file" id="file-upload" (change)="onImageSelected($event)" style="margin-left: 1rem;" />
+    </div>
+    <div class="btn">
+      <div (click)="generateCardPng()">Generate Card Image</div>
     </div>
   </aside>
+</div>
 </div>

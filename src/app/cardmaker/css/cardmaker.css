@@ -1,9 +1,17 @@
 .cardMaker-content {
   display: flex;
+    min-height: 100vh;
+
+}
+
+.c2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 5rem;;
 }
 
 .cardMaker {
-  right: 0;
   font-family: monospace;
   background-color: rgba(var(--second-bg-color-rgb), 0.8);
   border: 0.2rem solid var(--main-color);
@@ -13,8 +21,7 @@
   font-size: 1.5rem;
   color: var(--text-color);
   gap: 1rem;
-  min-height: 100vh;
-  width: 190rem;
+  height: fit-content;
 }
 
 .labelInputField,
@@ -468,12 +475,7 @@
 }
 
 /* GENERATE CARD */
-.generateCard {
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .generateCard button{
   background: var(--bg-color);
   border-radius: 0.8rem;
@@ -504,4 +506,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 1rem 2rem;
+  height: 100%;
+  background-color: var(--bg-color);
+  border: solid 1px var(--main-color);
+  border-radius: .8rem;
+  font-size: 1.8rem;
+  letter-spacing: .1rem;
+  color: var(--main-color);
+  z-index: 1;
+  overflow: hidden;
+  transition: .5s;
+  cursor: pointer;
+}
+
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--main-color);
+  z-index: -1;
+  transition: .5s;
+}
+
+ .btn:hover {
+  color: var(--bg-color);
+}
+
+ .btn:hover::before {
+  width: 100%;
 }
